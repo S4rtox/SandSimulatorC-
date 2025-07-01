@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug SandSimulator2",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/SandSimulator2/bin/Debug/net8.0/SandSimulator2.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/SandSimulator2",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Launch SandSimulator2 (no build)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/SandSimulator2/bin/Debug/net8.0/SandSimulator2.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/SandSimulator2",
+      "console": "internalConsole",
+      "stopAtEntry": false,
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}

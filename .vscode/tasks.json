@@ -1,0 +1,20 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "dotnet",
+      "task": "build /home/sartox/Desktop/C#/SandSimulatorC-/SandSimulator2/SandSimulator2.csproj",
+      "file": "/home/sartox/Desktop/C#/SandSimulatorC-/SandSimulator2/SandSimulator2.csproj",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "dotnet: build /home/sartox/Desktop/C#/SandSimulatorC-/SandSimulator2/SandSimulator2.csproj"
+    },
+    {
+      "type": "dotnet",
+      "task": "build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "dotnet: build"
+    }
+  ]
+}

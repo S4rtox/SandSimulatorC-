@@ -29,7 +29,7 @@ public class GraphicManager
     {
         foreach (var element in _gridManager.Grid)
         {
-            //if(element is Empty) continue;
+            if (element is Empty) continue;
             var rect = new Rectangle(element.Position.X * _pixelSize, element.Position.Y * _pixelSize, _pixelSize, _pixelSize);
             var color = element.Color;
             spriteBatch.Draw(_pixelTexture, rect, color);
