@@ -1,6 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandSimulator2", "SandSimulator2\SandSimulator2.csproj", "{8D79591F-6A08-4DBF-98C4-534112161CB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tutorial", "..\SandSimulator\Tutorial\Tutorial.csproj", "{AAF0B289-E294-4A9F-99D9-CEB768B05A4E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +15,9 @@ Global
 		{8D79591F-6A08-4DBF-98C4-534112161CB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D79591F-6A08-4DBF-98C4-534112161CB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D79591F-6A08-4DBF-98C4-534112161CB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAF0B289-E294-4A9F-99D9-CEB768B05A4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAF0B289-E294-4A9F-99D9-CEB768B05A4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAF0B289-E294-4A9F-99D9-CEB768B05A4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAF0B289-E294-4A9F-99D9-CEB768B05A4E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

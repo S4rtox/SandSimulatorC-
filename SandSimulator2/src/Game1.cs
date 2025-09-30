@@ -9,6 +9,9 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+
+    // FRAMEWORK
+
     private GridManager _gridManager;
     private GraphicManager _graphicManager;
 
