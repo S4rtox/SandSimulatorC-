@@ -1,27 +1,24 @@
 using System;
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using SandSimulator2.GridManagers;
-using Color = Microsoft.Xna.Framework.Color;
 
 namespace SandSimulator2.Elements.Kinetic;
 
-public class Sand : Element
+public class Dirt : Element
 {
-    public Sand() : base(new Color(194, 178, 128))
+    public Dirt() : base(new Color(89, 61, 46))
     {
-        //Primero tenemos los sprites de la arena:
-        var Color0 = new Color(194, 178, 128);
-        var Color1 = new Color(170, 165, 111);
-        var Color2 = new Color(233, 222, 211);
-        var Color3 = new Color(210, 200, 151);
-        
-        Random random = new Random();
-        int num = random.Next(0, 3);
-        
-        Color[] color = {Color0,Color1, Color2, Color3 };
+        // Dirt
+        var Dirt0 = new Color(120, 85, 60);
+        var Dirt1 = new Color(140, 100, 75);
+        var Dirt2 = new Color(100, 70, 50);
 
-        Color = color[num];
+        Random randomDirt = new Random();
+        int numDirt = randomDirt.Next(0, 3);
+
+        Color[] DirtColors = { Dirt0, Dirt1, Dirt2 };
+
+        Color = DirtColors[numDirt];
     }
 
 
