@@ -73,7 +73,16 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Water);
             Console.WriteLine("Changed to water");
+        }else if (keyboardState.IsKeyDown(Keys.D4))
+        {
+            SelectedElementType = typeof(Dirt);
+            Console.WriteLine("Changed to dirt");
+        }else if (keyboardState.IsKeyDown(Keys.D5))
+        {
+            SelectedElementType = typeof(Smoke);
+            Console.WriteLine("Changed to steam");
         }
+        
 
     }
     private void HandleMouse()
