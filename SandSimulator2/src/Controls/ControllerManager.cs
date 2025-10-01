@@ -43,7 +43,7 @@ public class ControllerManager
     {
         HandleKeyboard();
         HandleMouse();
-        //HandleScrollWheel();
+        HandleScrollWheel();
 
     }
 
@@ -69,6 +69,10 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Stone);
             Console.WriteLine("Changed to stone");
+        }else if (keyboardState.IsKeyDown(Keys.D3))
+        {
+            SelectedElementType = typeof(Water);
+            Console.WriteLine("Changed to water");
         }
 
     }
@@ -129,10 +133,12 @@ public class ControllerManager
                 var offset = new Vector2I(x, y);
                 var targetPosition = CenterPosition + offset;
                 //Para que sea un circulito :)
-               //if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
+
+                if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
+
                 // Si estamos remplazando
-                if(!isReplacing && _gridManager[x,y] is not Empty) continue;
+                //if(!isReplacing && _gridManager[x,y] is not Empty) continue;
 
                 _gridManager[targetPosition] = element?? (Element)Activator.CreateInstance(SelectedElementType);
             }
