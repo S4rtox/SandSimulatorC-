@@ -18,7 +18,7 @@ public class Dirt : Element
 
         Color[] DirtColors = { Dirt0, Dirt1, Dirt2 };
 
-        Color Dirt = DirtColors[numDirt];
+        Color = DirtColors[numDirt];
     }
 
 

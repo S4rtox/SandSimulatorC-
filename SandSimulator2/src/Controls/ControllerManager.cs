@@ -81,6 +81,26 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Smoke);
             Console.WriteLine("Changed to steam");
+        }else if (keyboardState.IsKeyDown(Keys.D6))
+        {
+            SelectedElementType = typeof(Steam);
+            Console.WriteLine("Changed to Steam");
+        }else if (keyboardState.IsKeyDown(Keys.D7))
+        {
+            SelectedElementType = typeof(Water);
+            Console.WriteLine("Changed to water");
+        }else if (keyboardState.IsKeyDown(Keys.D8))
+        {
+            SelectedElementType = typeof(Flesh);
+            Console.WriteLine("Changed to Flesh");
+        }else if (keyboardState.IsKeyDown(Keys.D9))
+        {
+            SelectedElementType = typeof(Wood);
+            Console.WriteLine("Changed to Wood");
+        }else if (keyboardState.IsKeyDown(Keys.D0))
+        {
+            SelectedElementType = typeof(Blood);
+            Console.WriteLine("Changed to Blood");
         }
         
 
