@@ -42,8 +42,8 @@ public class ControllerManager
     public void HandleInput(GameTime time)
     {
         HandleKeyboard();
-       HandleMouse();
-         handleScrollWheel();
+        HandleMouse();
+        //HandleScrollWheel();
 
     }
 
@@ -79,11 +79,11 @@ public class ControllerManager
         {
             var mousePosition = getGridRelativePosition(mouseState.X, mouseState.Y, _gridManager);
             Draw(mousePosition, _isReplacing);
-            _clickedBefore = true;
+
         }else if(mouseState.LeftButton == ButtonState.Released)
         {
-            _clickedBefore = false;
         }
+
 
         if(mouseState.RightButton == ButtonState.Pressed)
         {
@@ -104,7 +104,7 @@ public class ControllerManager
         return new Vector2I(gridX, gridY);
     }
 
-    private void handleScrollWheel()
+    private void HandleScrollWheel()
     {
         var mouseState = Mouse.GetState();
         int delta = mouseState.ScrollWheelValue - _scrollWheelValue;
@@ -129,7 +129,7 @@ public class ControllerManager
                 var offset = new Vector2I(x, y);
                 var targetPosition = CenterPosition + offset;
                 //Para que sea un circulito :)
-                if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
+               //if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
                 // Si estamos remplazando
                 if(!isReplacing && _gridManager[x,y] is not Empty) continue;
