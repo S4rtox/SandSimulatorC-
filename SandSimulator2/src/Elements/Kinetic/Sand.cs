@@ -6,6 +6,7 @@ namespace SandSimulator2.Elements.Kinetic;
 
 public class Sand : Element
 {
+
     public Sand() : base(new Color(194, 178, 128))
     {
 

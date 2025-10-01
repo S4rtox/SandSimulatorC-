@@ -132,7 +132,7 @@ public class ControllerManager
                 if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
                 // Si estamos remplazando
-                if(!isReplacing && _gridManager.getElementAt(targetPosition.X, targetPosition.Y) is not Empty) continue;
+                if(!isReplacing && _gridManager[x,y] is not Empty) continue;
 
                 _gridManager[targetPosition] = element?? (Element)Activator.CreateInstance(SelectedElementType);
             }

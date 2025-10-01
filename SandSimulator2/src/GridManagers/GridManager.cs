@@ -73,17 +73,6 @@ public class GridManager
         }
     }
 
-    public Element getElementAt(int x, int y)
-    {
-        return _grid[x, y];
-    }
-
-
-    public void moveElementTo(Element element, int x, int y)
-    {
-        _grid[x, y] = element;
-    }
-
     public bool IsInBounds(int x, int y)
     {
         return !(x < 0 || x >= Width || y < 0 || y >= Height);
