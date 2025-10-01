@@ -44,7 +44,6 @@ public class ControllerManager
         HandleKeyboard();
         HandleMouse();
         HandleScrollWheel();
-
     }
 
     private void HandleKeyboard()
@@ -132,13 +131,14 @@ public class ControllerManager
             {
                 var offset = new Vector2I(x, y);
                 var targetPosition = CenterPosition + offset;
+
                 //Para que sea un circulito :)
 
                 if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
 
                 // Si estamos remplazando
-                //if(!isReplacing && _gridManager[x,y] is not Empty) continue;
+                if(!isReplacing && _gridManager[x+CenterPosition.X,CenterPosition.Y+y] is not Empty) continue;
 
                 _gridManager[targetPosition] = element?? (Element)Activator.CreateInstance(SelectedElementType);
             }

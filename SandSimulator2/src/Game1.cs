@@ -51,9 +51,10 @@ public class Game1 : Game
             Exit();
 
 
-        _controllerManager.HandleInput(delta);
+
 
         _gridManager.Update(delta);
+        _controllerManager.HandleInput(delta);
         // TODO: Add your update logic here
 
         base.Update(delta);
