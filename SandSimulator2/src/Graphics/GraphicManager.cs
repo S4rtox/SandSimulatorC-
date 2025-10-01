@@ -6,19 +6,10 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2;
 
-public class GraphicManager
+public class GraphicManager(GridManager gridManager,  int pixelSize)
 {
     private Texture2D _pixelTexture;
-    private GridManager _gridManager;
-    private int _pixelSize;
 
-    public GraphicManager(GridManager gridManager, int pixelSize)
-    {
-
-        _gridManager = gridManager;
-        _pixelSize = pixelSize;
-
-    }
 
     public void LoadContent(GraphicsDevice device)
     {
@@ -27,23 +18,32 @@ public class GraphicManager
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-        foreach (var element in _gridManager.Grid)
+        for (int x = 0; x < gridManager.Width; x++)
         {
-            if (element is Empty) continue;
-            var rect = new Rectangle(element.Position.X * _pixelSize, element.Position.Y * _pixelSize, _pixelSize, _pixelSize);
-            var color = element.Color;
-            spriteBatch.Draw(_pixelTexture, rect, color);
+            for (int y = 0; y < gridManager.Height; y++)
+            {
+                var element = gridManager[x, y];
+                if (element is Empty) continue;
+                int invertedY = (gridManager.Height - 1 - y);
+                var rect = new Rectangle(x * pixelSize, invertedY * pixelSize, pixelSize, pixelSize);
+                var color = element.Color;
+                spriteBatch.Draw(_pixelTexture, rect, color);
+            }
         }
     }
 
 
-    public static (int columns, int rows) GetGridSize(int pixelSize)
+    public static (int rows, int columns) GetGridSize(GraphicsDeviceManager graphics,int pixelSize)
     {
-        var screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-        var screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-        var columns = screenWidth / pixelSize;
-        var rows = screenHeight / pixelSize;
+        //var screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+        var windowWidth = graphics.GraphicsDevice.Viewport.Width;
+        var windowHeight = graphics.GraphicsDevice.Viewport.Height;
+
+
+
+        var columns = windowWidth / pixelSize;
+        var rows = windowHeight / pixelSize;
 
         return (columns, rows);
 

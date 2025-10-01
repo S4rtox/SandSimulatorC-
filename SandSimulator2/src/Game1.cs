@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SandSimulator2.Controls;
 using SandSimulator2.GridManagers;
 
 namespace SandSimulator2;
@@ -14,6 +15,7 @@ public class Game1 : Game
 
     private GridManager _gridManager;
     private GraphicManager _graphicManager;
+    private ControllerManager _controllerManager;
 
     private const int PixelSize = 4;
 
@@ -27,8 +29,9 @@ public class Game1 : Game
     {
         // TODO: Add your initialization logic here
 
-        var (x, y) = GraphicManager.GetGridSize(PixelSize);
+        var (x, y) = GraphicManager.GetGridSize(_graphics,PixelSize);
         _gridManager = new GridManager(x, y);
+        _controllerManager = new ControllerManager(_gridManager, PixelSize);
         _graphicManager = new GraphicManager(_gridManager, PixelSize);
         base.Initialize();
     }
@@ -46,6 +49,9 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
+
+
+        _controllerManager.HandleInput(delta);
 
         _gridManager.Update(delta);
         // TODO: Add your update logic here

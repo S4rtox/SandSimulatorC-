@@ -6,24 +6,45 @@ namespace SandSimulator2.GridManagers;
 
 public class GridManager
 {
-    public Element[,] Grid { get; private set; }
+    private Element[,] _grid;
+
+    public int Width { get; }
+    public int Height { get; }
 
 
 
+    // Indexers - Adoro C# - No tocar si no sabes que pedo porfas :)
+    public Element this[int x, int y]
+    {
+        get => IsInBounds(x, y) ? _grid[x, y] : Border.Instance;
 
-    //maybe look for videos of how people fixed these problems.
+        set
+        {
+            if (IsInBounds(x, y)) _grid[x, y] = value;
+        }
+    }
+    public Element this[Vector2I vector2I]
+    {
+        get => IsInBounds(vector2I) ? _grid[vector2I.X, vector2I.Y] : Empty.Instance;
+        set
+        {
+            if (IsInBounds(vector2I)) _grid[vector2I.X, vector2I.Y] = value;
+        }
+    }
 
-    //THis shit became more complicated than I thought it was gonna be.
+
     public GridManager(int width, int height)
     {
-        Grid = new Element[width, height];
+        Width = width;
+        Height = height;
+        _grid = new Element[width, height];
 
         //fill both grids with empty elements
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                Grid[x, y] = Empty.Instance;
+                _grid[x, y] = Empty.Instance;
             }
         }
     }
@@ -31,26 +52,46 @@ public class GridManager
 
     public void Update(GameTime delta)
     {
-        for (int x = 0; x < Grid.GetLength(0); x++)
+        for (int y = Height - 1; y >= 0; y--)
         {
-            for (int y = Grid.GetLength(1); y > 0; y--)
+            for (int x = 0; x < Width; x++)
             {
-                if (Grid[x, y] is Empty) continue;
+                var element = _grid[x, y];
+                if (element is Empty || element.HasBeenUpdated) continue;
+                element.Update(new Vector2I(x, y), this, delta);
+                element.HasBeenUpdated = true;
+            }
+        }
 
-                Grid[x,y].step(this, delta);
+        //Reset all elements to not updated
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                _grid[x, y].HasBeenUpdated = false;
             }
         }
     }
 
     public Element getElementAt(int x, int y)
     {
-        return Grid[x, y];
+        return _grid[x, y];
     }
 
 
     public void moveElementTo(Element element, int x, int y)
     {
-        Grid[x, y] = element;
+        _grid[x, y] = element;
+    }
+
+    public bool IsInBounds(int x, int y)
+    {
+        return !(x < 0 || x >= Width || y < 0 || y >= Height);
+    }
+
+    public bool IsInBounds(Vector2I position)
+    {
+        return IsInBounds(position.X, position.Y);
     }
 
 }

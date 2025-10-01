@@ -22,16 +22,16 @@ namespace Microsoft.Xna.Framework
     private static readonly Vector2I unitVector = new Vector2I(1, 1);
     private static readonly Vector2I unitXVector = new Vector2I(1, 0);
     private static readonly Vector2I unitYVector = new Vector2I(0, 1);
+
     /// <summary>
     /// The x coordinate of this <see cref="T:Microsoft.Xna.Framework.Vector2I" />.
     /// </summary>
-    [DataMember]
-    public int X;
+    [DataMember] public int X;
+
     /// <summary>
     /// The y coordinate of this <see cref="T:Microsoft.Xna.Framework.Vector2I" />.
     /// </summary>
-    [DataMember]
-    public int Y;
+    [DataMember] public int Y;
 
     /// <summary>
     /// Returns a <see cref="T:Microsoft.Xna.Framework.Vector2I" /> with components 0, 0.
@@ -228,9 +228,9 @@ namespace Microsoft.Xna.Framework
     /// <returns>The clamped value.</returns>
     public static Vector2I Clamp(Vector2I value1, Vector2I min, Vector2I max)
     {
-        return new Vector2I(
-            MathHelper.Clamp(value1.X, min.X, max.X),
-            MathHelper.Clamp(value1.Y, min.Y, max.Y));
+      return new Vector2I(
+        MathHelper.Clamp(value1.X, min.X, max.X),
+        MathHelper.Clamp(value1.Y, min.Y, max.Y));
     }
 
     /// <summary>Clamps the specified value within a range.</summary>
@@ -244,8 +244,8 @@ namespace Microsoft.Xna.Framework
       ref Vector2I max,
       out Vector2I result)
     {
-        result.X = MathHelper.Clamp(value1.X, min.X, max.X);
-        result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
+      result.X = MathHelper.Clamp(value1.X, min.X, max.X);
+      result.Y = MathHelper.Clamp(value1.Y, min.Y, max.Y);
     }
 
     /// <summary>Returns the distance between two vectors.</summary>
@@ -256,7 +256,7 @@ namespace Microsoft.Xna.Framework
     {
       int num1 = value1.X - value2.X;
       int num2 = value1.Y - value2.Y;
-      return MathF.Sqrt((float) (num1 * num1 + num2 * num2));
+      return MathF.Sqrt((float)(num1 * num1 + num2 * num2));
     }
 
     /// <summary>Returns the distance between two vectors.</summary>
@@ -267,7 +267,7 @@ namespace Microsoft.Xna.Framework
     {
       int num1 = value1.X - value2.X;
       int num2 = value1.Y - value2.Y;
-      result = MathF.Sqrt((float) (num1 * num1 + num2 * num2));
+      result = MathF.Sqrt((float)(num1 * num1 + num2 * num2));
     }
 
     /// <summary>Returns the squared distance between two vectors.</summary>
@@ -545,21 +545,26 @@ namespace Microsoft.Xna.Framework
     public Point ToPoint() => new Point(this.X, this.Y);
 
 
-     /// <summary>
+
+
+
+    /// <summary>
     /// Deconstruction method for <see cref="T:Microsoft.Xna.Framework.Vector2I" />.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
     public void Deconstruct(out int x, out int y)
     {
-        x = this.X;
-        y = this.Y;
+      x = this.X;
+      y = this.Y;
     }
 
-     //methods for converting Vector2I to Vector2 and vice versa
+    //methods for converting Vector2I to Vector2 and vice versa
     public static implicit operator Vector2(Vector2I v) => new Vector2(v.X, v.Y);
 
-    public static implicit operator Vector2I(Vector2 v) => new Vector2I((int)v.X, (int)v.Y);
+    public static implicit operator System.Numerics.Vector2 (Vector2I v) => new System.Numerics.Vector2(v.X, v.Y);
+
+  public static implicit operator Vector2I(Vector2 v) => new Vector2I((int)v.X, (int)v.Y);
     //how does this work? - implicit conversion operators allow you to convert between two types without explicitly calling a conversion method
 
 
