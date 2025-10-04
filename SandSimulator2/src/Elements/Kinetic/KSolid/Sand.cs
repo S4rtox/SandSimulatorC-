@@ -11,10 +11,10 @@ public class Sand : Element
     public Sand() : base(new Color(194, 178, 128))
     {
         //Primero tenemos los sprites de la arena:
-        var Color0 = new Color(194, 178, 128);
-        var Color1 = new Color(170, 165, 111);
-        var Color2 = new Color(233, 222, 211);
-        var Color3 = new Color(210, 200, 151);
+        var Color0 = new Color(234,190,117);
+        var Color1 = new Color(245,209,151);
+        var Color2 = new Color(251,227,188);
+        var Color3 = new Color(255,240,217);
         
         Random random = new Random();
         int num = random.Next(0, 3);
