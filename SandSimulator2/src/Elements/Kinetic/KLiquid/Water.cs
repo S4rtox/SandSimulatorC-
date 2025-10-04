@@ -9,13 +9,14 @@ public class Water : Element
     public Water() : base(Color.Blue)
     {
         // Water
-        var Water0 = new Color(64, 164, 223);
-        var Water1 = new Color(80, 180, 230);
-        var Water2 = new Color(100, 200, 240);
-        var Water3 = new Color(140, 220, 255);
-        var Water4 = new Color(180, 240, 255);
+       var Water0 = new Color(37, 124, 196);
+        var Water1 = new Color(57, 159, 225);
+        var Water2 = new Color(33, 147, 212);
+        var Water3 = new Color(104, 194, 243);
+        var Water4 = new Color(95, 175, 218);
 
         Random randomWater = new Random();
+
         int numWater = randomWater.Next(0, 5);
 
         Color[] WaterColors = { Water0, Water1, Water2, Water3, Water4 };
@@ -73,6 +74,26 @@ public class Water : Element
                 return;
             }
         }
+        //patron para cambio de color el agua
+        WaterPattern();
 
+    }
+    public void WaterPattern()
+    {
+        
+        var Water0 = new Color(37, 124, 196);
+        var Water1 = new Color(57, 159, 225);
+        var Water2 = new Color(33, 147, 212);
+        var Water3 = new Color(104, 194, 243);
+        var Water4 = new Color(95, 175, 218);
+        Color[] WaterColors = { Water0, Water1, Water2, Water3, Water4 };
+
+        // Probabilidad de cambiar de color al 20%
+        Random rand = new Random();
+        if (rand.NextDouble() < 0.2)
+        {
+            int numWater = rand.Next(0, WaterColors.Length);
+            Color = WaterColors[numWater];
+        }
     }
 }
