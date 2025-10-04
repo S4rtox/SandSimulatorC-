@@ -51,22 +51,27 @@ public class Water : Element
             gridManager[position.X, position.Y] = Empty.Instance;
             return;
         }
+        // Movimiento horizontal aleatorio si hay espacio vacío
+        Random rand = new Random();
+        bool tryLeft = rand.Next(0, 2) == 0; // 0 = izquierda, 1 = derecha
 
-        //si el elemento de la izquierda esta vacio se va hacia la izquierda
-        if (gridManager[position.X - 1, position.Y] is Empty)
+        if (tryLeft)
         {
-            gridManager[position.X - 1, position.Y] = this;
-            gridManager[position.X, position.Y] = Empty.Instance;
-            return;
-
+            if (gridManager[position.X - 1, position.Y] is Empty)
+            {
+                gridManager[position.X - 1, position.Y] = this;
+                gridManager[position.X, position.Y] = Empty.Instance;
+                return;
+            }
         }
-        //si el elemento de la derecha esta vacio 
-        if (gridManager[position.X + 1, position.Y] is Empty)
+        else
         {
-            gridManager[position.X + 1, position.Y] = this;
-            gridManager[position.X, position.Y] = Empty.Instance;
-            return;
-
+            if (gridManager[position.X + 1, position.Y] is Empty)
+            {
+                gridManager[position.X + 1, position.Y] = this;
+                gridManager[position.X, position.Y] = Empty.Instance;
+                return;
+            }
         }
 
     }
