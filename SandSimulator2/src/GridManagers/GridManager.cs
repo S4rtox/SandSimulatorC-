@@ -20,7 +20,11 @@ public class GridManager
 
         set
         {
-            if (IsInBounds(x, y)) _grid[x, y] = value;
+            if (!IsInBounds(x, y)) return;
+            _grid[x, y] = value;
+            if(value is not Empty)
+                value.Position = new Vector2I(x, y);
+
         }
     }
     public Element this[Vector2I vector2I]
@@ -28,7 +32,10 @@ public class GridManager
         get => IsInBounds(vector2I) ? _grid[vector2I.X, vector2I.Y] : Empty.Instance;
         set
         {
-            if (IsInBounds(vector2I)) _grid[vector2I.X, vector2I.Y] = value;
+            if (!IsInBounds(vector2I)) return;
+            _grid[vector2I.X, vector2I.Y] = value;
+            if(value is not Empty)
+                value.Position = vector2I;
         }
     }
 
@@ -58,7 +65,7 @@ public class GridManager
             {
                 var element = _grid[x, y];
                 if (element is Empty || element.HasBeenUpdated) continue;
-                element.Update(new Vector2I(x, y), this, delta);
+                element.Update( this, delta);
                 element.HasBeenUpdated = true;
             }
         }

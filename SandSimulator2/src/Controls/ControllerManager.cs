@@ -146,7 +146,7 @@ public class ControllerManager
         }
         else if (delta < 0)
         {
-            Radius = Math.Max(1, Radius - 1);
+            Radius = Math.Max(0, Radius - 1);
         }
         _scrollWheelValue = mouseState.ScrollWheelValue;
     }
@@ -154,9 +154,9 @@ public class ControllerManager
 
     private void Draw(Vector2I CenterPosition,bool isReplacing = false, Element element = null )
     {
-        for (var x = -Radius; x < Radius; x++)
+        for (var x = -Radius; x <= Radius; x++)
         {
-            for (var y = -Radius; y < Radius; y++)
+            for (var y = -Radius; y <= Radius; y++)
             {
                 var offset = new Vector2I(x, y);
                 var targetPosition = CenterPosition + offset;

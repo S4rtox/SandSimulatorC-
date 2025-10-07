@@ -24,7 +24,7 @@ public class Stone:Element
 
     }
 
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+    public override void Update( GridManager gridManager, GameTime delta)
     {
 
     }

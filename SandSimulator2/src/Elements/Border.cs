@@ -13,6 +13,13 @@ public class Border : Element
 
     private static readonly object LockObject = new();
 
+    private readonly Vector2I _nullPosition = new(-1, -1);
+    public override Vector2I Position
+    {
+        get => _nullPosition;
+        set => throw new InvalidOperationException("Cannot set position of Empty element");
+    }
+
     public static Border Instance
     {
         get
@@ -31,14 +38,11 @@ public class Border : Element
 
 
 
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+    public override void Update( GridManager gridManager, GameTime delta)
     {
         throw new InvalidOperationException("Border element tried to make an update operation");
     }
 
-    public override void ReactToOther(GridManager gridManager, Element element, GameTime delta)
-    {
-        throw new InvalidOperationException("Border element tried to react to another element");
-    }
+
 
 }
