@@ -1,14 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameGum;
 using SandSimulator2.Controls;
 using SandSimulator2.GridManagers;
+using SandSimulator2.Screens;
 
 namespace SandSimulator2;
 
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
+    GumService GumUI => GumService.Default;
+
     private SpriteBatch _spriteBatch;
 
     // FRAMEWORK
@@ -28,6 +32,11 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
+        var gumProject = GumUI.Initialize(this,
+            // This is relative to Content:
+            "GumProject/Interface.gumx");
+        var screen = new ElementMenu();
+        screen.AddToRoot();
 
         var (x, y) = GraphicManager.GetGridSize(_graphics,PixelSize);
         _gridManager = new GridManager(x, y);
@@ -52,7 +61,7 @@ public class Game1 : Game
 
 
 
-
+        GumUI.Update(delta);
         _gridManager.Update(delta);
         _controllerManager.HandleInput(delta);
         // TODO: Add your update logic here
@@ -63,10 +72,12 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
+
         _spriteBatch.Begin();
         _graphicManager.Draw(_spriteBatch);
         // TODO: Add your drawing code here
         _spriteBatch.End();
+        GumUI.Draw();
         base.Draw(gameTime);
     }
 }

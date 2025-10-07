@@ -1,0 +1,34 @@
+{
+  "UserEvents": {
+    "0500d3f59bfb7f36501711b5e2d0258c881c36863cd51625c2bcad55e72f1e2c": [
+      {
+        "NewName": "ElementMenu",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-10-07T04:16:08.5808801Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonIconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-07T04:16:38.1201656Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/ButtonIcon ButtonIconInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-07T04:16:52.9826469Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonStandardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-07T04:17:23.414134Z"
+      }
+    ]
+  }
+}
