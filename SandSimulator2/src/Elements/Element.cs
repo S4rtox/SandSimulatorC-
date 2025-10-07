@@ -6,6 +6,7 @@ namespace SandSimulator2.Elements;
 
 public abstract class Element
 {
+    public virtual Vector2I Position { get; set; }
     public Color Color { get; protected set; }
 
     public bool HasBeenUpdated { get; set; } = true;
@@ -15,17 +16,9 @@ public abstract class Element
         Color = color;
     }
 
-    public abstract void Update(Vector2I position,GridManager gridManager, GameTime delta);
+    public abstract void Update(GridManager gridManager, GameTime delta);
 
     //Posible removal
-    public virtual void ReactToOther(GridManager gridManager, Element element, GameTime delta)
-    {
-        if (element is Empty || !element.HasBeenUpdated) return;
-    }
-
-
-
-
 
 
 
