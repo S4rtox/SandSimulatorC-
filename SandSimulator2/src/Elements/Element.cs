@@ -15,21 +15,15 @@ public abstract class Element
         Color = color;
     }
 
-    public abstract void Update(Vector2I position,GridManager gridManager, GameTime delta);
+    public virtual void Update(Vector2I position,GridManager gridManager, GameTime delta)
+    {
+        throw new System.NotImplementedException();
+    }
 
     //Posible removal
     public virtual void ReactToOther(GridManager gridManager, Element element, GameTime delta)
     {
         if (element is Empty || !element.HasBeenUpdated) return;
     }
-
-
-
-
-
-
-
-
-
 
 }

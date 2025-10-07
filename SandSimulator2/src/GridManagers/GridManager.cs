@@ -82,5 +82,4 @@ public class GridManager
     {
         return IsInBounds(position.X, position.Y);
     }
-
 }
