@@ -17,7 +17,10 @@ public abstract class Element
 
     public abstract void Update(GridManager.ElementAPI api, GameTime delta);
 
-    public abstract void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi);
+    public virtual void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
+
+    }
 
     //Posible removal
 
