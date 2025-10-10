@@ -13,7 +13,7 @@ public class Wood : Element
         var Wood2 = new Color(140, 102, 50);
         var Wood3 = new Color(160, 120, 70);
 
-        Random randomWood = new Random();
+        Random randomWood = RandomProvider.Random;
         int numWood = randomWood.Next(0, 4);
 
         Color[] WoodColors = { Wood0, Wood1, Wood2, Wood3 };
@@ -21,8 +21,13 @@ public class Wood : Element
         Color = WoodColors[numWood];
 
     }
-    
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
+    {
+
+    }
+
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 
     }

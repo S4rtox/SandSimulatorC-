@@ -2,14 +2,12 @@
 // Type: Microsoft.Xna.Framework.Vector2I
 // Changes: float to int throughout, removed methods that don't make sense with integers (like Normalize)
 
-using Microsoft.Xna.Framework.Design;
+#nullable disable
 using System;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-#nullable disable
 namespace Microsoft.Xna.Framework
 {
   /// <summary>Describes a 2D-vector using integers.</summary>

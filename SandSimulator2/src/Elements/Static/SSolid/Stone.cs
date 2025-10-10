@@ -15,7 +15,7 @@ public class Stone:Element
         var Stone3 = new Color(100, 100, 100);
         var Stone4 = new Color(180, 180, 180);
 
-        Random randomStone = new Random();
+        Random randomStone = RandomProvider.Random;
         int numStone = randomStone.Next(0, 5);
 
         Color[] StoneColors = { Stone0, Stone1, Stone2, Stone3, Stone4 };
@@ -24,7 +24,13 @@ public class Stone:Element
 
     }
 
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
+    {
+
+    }
+
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 
     }

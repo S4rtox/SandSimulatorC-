@@ -27,6 +27,7 @@
         <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105"/>
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="src\Elements\Interfaces\" />
       <Folder Include="src\Elements\Static\SGas\" />
     </ItemGroup>
     <Target Name="RestoreDotnetTools" BeforeTargets="Restore">

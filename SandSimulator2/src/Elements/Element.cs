@@ -8,22 +8,18 @@ public abstract class Element
 {
     public Color Color { get; protected set; }
 
-    public bool HasBeenUpdated { get; set; } = true;
+    public virtual byte Clock { get; set; } = 0;
 
     protected Element(Color color)
     {
         Color = color;
     }
 
-    public abstract void Update(Vector2I position,GridManager gridManager, GameTime delta);
+    public abstract void Update(GridManager.ElementAPI api, GameTime delta);
+
+    public abstract void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi);
 
     //Posible removal
-    public virtual void ReactToOther(GridManager gridManager, Element element, GameTime delta)
-    {
-        if (element is Empty || !element.HasBeenUpdated) return;
-    }
-
-
 
 
 
