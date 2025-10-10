@@ -6,21 +6,22 @@ namespace SandSimulator2.Elements;
 
 public abstract class Element
 {
-    public virtual Vector2I Position { get; set; }
     public Color Color { get; protected set; }
 
-    public bool HasBeenUpdated { get; set; } = true;
-
-    public byte Clock;
+    public virtual byte Clock { get; set; } = 0;
 
     protected Element(Color color)
     {
         Color = color;
     }
 
-    public abstract void Update(GridManager gridManager, GameTime delta);
+    public abstract void Update(GridManager.ElementAPI api, GameTime delta);
+
+    public abstract void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi);
 
     //Posible removal
+
+
 
 
 

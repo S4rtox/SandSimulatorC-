@@ -162,14 +162,15 @@ public class ControllerManager
                 var targetPosition = CenterPosition + offset;
 
                 //Para que sea un circulito :)
-
                 if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
 
                 // Si estamos remplazando
-                if(!isReplacing && _gridManager[x+CenterPosition.X,CenterPosition.Y+y] is not Empty) continue;
+                if(!isReplacing && _gridManager.GetElement(targetPosition.X, targetPosition.Y) is not Empty) continue;
 
-                _gridManager[targetPosition] = element?? (Element)Activator.CreateInstance(SelectedElementType);
+                var newElement = element ?? (Element)Activator.CreateInstance(SelectedElementType);
+                _gridManager.SetElement(targetPosition.X, targetPosition.Y, newElement);
+                newElement!.Clock = (byte)(_gridManager.Generation + 1); // Evita doble actualización en el mismo ciclo
             }
 
         }

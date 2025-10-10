@@ -13,7 +13,7 @@ public class Blood : Element
         var Blood2 = new Color(110, 0, 0);
         var Blood3 = new Color(190, 30, 30);
 
-        Random randomBlood = new Random();
+        Random randomBlood = RandomProvider.Random;
         int numBlood = randomBlood.Next(0, 4);
 
         Color[] BloodColors = { Blood0, Blood1, Blood2, Blood3 };
@@ -23,50 +23,29 @@ public class Blood : Element
 
     }
 
-
-    public override void Update( GridManager gridManager, GameTime delta)
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
-
+        var belowElement = api.GetElement(0, -1);
         //Si el elemento de abajo es vacio, se mueve hacia abajo
-        if (gridManager[Position.X, Position.Y] is Empty)
+        if (belowElement is Empty)
         {
-            gridManager[Position.X, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
+            api.MoveTo(0, -1);
 
         }
-        //Si el elemento de abajo a la izquierda es vacio, se mueve hacia abajo a la izquierda
-        if (gridManager[Position.X - 1, Position.Y - 1] is Empty)
+        else if (api.GetElement(-1, -1) is Empty)
         {
-            gridManager[Position.X - 1, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
-        }
-
-        //Si el elemento de abajo a la derecha es vacio, se mueve hacia abajo a la derecha
-        if (gridManager[Position.X + 1, Position.Y - 1] is Empty)
-        {
-            gridManager[Position.X + 1, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
-        }
-
-        //si el elemento de la izquierda esta vacio se va hacia la izquierda
-        if (gridManager[Position.X - 1, Position.Y] is Empty)
-        {
-            gridManager[Position.X - 1, Position.Y] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
+            api.MoveTo(-1, -1);
 
         }
-        //si el elemento de la derecha esta vacio 
-        if (gridManager[Position.X + 1, Position.Y] is Empty)
+        else if (api.GetElement(1, -1) is Empty)
         {
-            gridManager[Position.X + 1, Position.Y] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
+            api.MoveTo(1, -1);
 
         }
+    }
+
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
 
     }
 }

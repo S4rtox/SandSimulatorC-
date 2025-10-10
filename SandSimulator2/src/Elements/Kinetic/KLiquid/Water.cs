@@ -20,7 +20,7 @@ public class Water : Element
         var Water3 = new Color(104, 194, 243);
         var Water4 = new Color(95, 175, 218);
 
-        Random randomWater = new Random();
+        Random randomWater = RandomProvider.Random;
 
         int numWater = randomWater.Next(0, 5);
 
@@ -30,96 +30,76 @@ public class Water : Element
 
     }
 
-
-    public override void Update(GridManager gridManager, GameTime delta)
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         WaterPattern();
-        //Si el elemento de abajo es vacio, se mueve hacia abajo
-        if (gridManager[Position.X, Position.Y - 1] is Empty)
+        // Si el elemento de abajo es vacío, se mueve hacia abajo
+        if (api.GetElement(0, -1) is Empty)
         {
-            gridManager[Position.X, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
-            return;
-
-        }
-
-         //Si el elemento de abajo a la izquierda es vacio, se mueve hacia abajo a la izquierda
-        if (gridManager[Position.X - 1, Position.Y - 1] is Empty)
-        {
-            gridManager[Position.X-1, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
+            api.MoveTo(0, -1);
             return;
         }
-
-        //Si el elemento de abajo a la derecha es vacio, se mueve hacia abajo a la derecha
-        if (gridManager[Position.X + 1, Position.Y - 1] is Empty)
+        // Si el elemento de abajo a la izquierda es vacío, se mueve hacia abajo a la izquierda
+        if (api.GetElement(-1, -1) is Empty)
         {
-            gridManager[Position.X +1, Position.Y - 1] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
+            api.MoveTo(-1, -1);
             return;
         }
-
-        // Movimiento horizontal aleatorio si hay espacio vacÃ­o
-        Random rand = new Random();
+        // Si el elemento de abajo a la derecha es vacío, se mueve hacia abajo a la derecha
+        if (api.GetElement(1, -1) is Empty)
+        {
+            api.MoveTo(1, -1);
+            return;
+        }
+        // Movimiento horizontal aleatorio si hay espacio vacío
+        Random rand = RandomProvider.Random;
         bool tryLeft = rand.Next(0, 2) == 0; // 0 = izquierda, 1 = derecha
+        var leftElement = api.GetElement(-1, 0);
+        var rightElement = api.GetElement(1, 0);
 
-        //checa si ambos lados estan vacios para intentar moverse a cualquiera de los dos lados
-        if (gridManager[Position.X - 1, Position.Y] is Empty && gridManager[Position.X + 1, Position.Y] is Empty)
+        // Checa si ambos lados están vacíos para intentar moverse a cualquiera de los dos lados
+        if (leftElement is Empty && rightElement is Empty)
         {
-            ApplyDispertion(tryLeft, gridManager);
+            ApplyDispertion(tryLeft, api);
             return;
         }
-        //checa si solo el lado izquierdo esta vacio
-        if (gridManager[Position.X - 1, Position.Y] is Empty)
+        // Checa si solo el lado izquierdo está vacío
+        if (leftElement is Empty)
         {
-            //checa si puede moverse a la izquierda y cada ciclo checa si puede seguir moviendose a la izquierda
-            ApplyDispertion(true, gridManager);
+            ApplyDispertion(true, api);
             return;
         }
-        //checa si solo el lado derecho esta vacio
-        if (gridManager[Position.X + 1, Position.Y] is Empty)
+        // Checa si solo el lado derecho está vacío
+        if (rightElement is Empty)
         {
-            //checa si puede moverse a la derecha y cada ciclo checa si puede seguir moviendose a la derecha
-            ApplyDispertion(false, gridManager);
+            ApplyDispertion(false, api);
             return;
         }
+    }
 
-
-
-
-       
-
-      
-       
-        //patron para cambio de color el agua
-
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
 
     }
 
-
-
-    private void ApplyDispertion(bool isLeft, GridManager gridManager)
-
+    // Nuevo método para dispersión usando ElementAPI
+    private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
-
-        for (int i = 1; i <= MDispertion(); i++)
+        int maxDisp = MDispertion();
+        for (int i = 1; i <= maxDisp; i++)
         {
-            if (gridManager[Position.X + i* direction, Position.Y] is Empty) continue;
-            gridManager[Position.X + (i - 1) * direction, Position.Y] = this;
-            gridManager[Position.X, Position.Y] = Empty.Instance;
+            if (api.GetElement(i * direction, 0) is Empty) continue;
+            api.MoveTo((i - 1) * direction, 0);
             return;
-
         }
-
-        gridManager[Position.X + MDispertion() * direction, Position.Y] = this;
-        gridManager[Position.X, Position.Y] = Empty.Instance;
-
+        api.MoveTo(maxDisp * direction, 0);
     }
+
     public int MDispertion()
     {
         int dispertion = 3;
-        Random disp = new Random();
+        Random disp = RandomProvider.Random;
          int j = disp.Next(0, dispertion);
 
         if (j == 0)
@@ -148,13 +128,14 @@ public class Water : Element
         Color[] WaterColors = { Water0, Water1, Water2, Water3, Water4 };
 
         // Probabilidad de cambiar de color
-        Random rand = new Random();
+        Random rand = RandomProvider.Random;
         if (rand.NextDouble() < 0.005)
         {
             int numWater = rand.Next(0, WaterColors.Length);
             Color = WaterColors[numWater];
         }
     }
-    
+
+
 
 }

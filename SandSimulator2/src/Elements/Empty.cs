@@ -15,12 +15,15 @@ public sealed class Empty : Element
 
     private static readonly object LockObject = new();
 
-    private readonly Vector2I _nullPosition = new(-1, -1);
-    public override Vector2I Position
+    public override byte Clock
     {
-        get => _nullPosition;
-        set => throw new InvalidOperationException("Cannot set position of Empty element");
+        get => 0;
+        set
+        {
+
+        }
     }
+
 
     public static Empty Instance
     {
@@ -38,11 +41,13 @@ public sealed class Empty : Element
 
     private Empty() : base(Color.Transparent) { }
 
-
-
-    public override void Update( GridManager gridManager, GameTime delta)
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         throw new InvalidOperationException("Empty element tried to make an update operation");
     }
 
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
+
+    }
 }

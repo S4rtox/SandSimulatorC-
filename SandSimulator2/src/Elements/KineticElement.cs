@@ -20,4 +20,8 @@ public abstract class KineticElement : Element
 
     }
 
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
+
+    }
 }

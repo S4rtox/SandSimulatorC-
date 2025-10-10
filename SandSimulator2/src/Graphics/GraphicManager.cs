@@ -22,7 +22,7 @@ public class GraphicManager(GridManager gridManager,  int pixelSize)
         {
             for (int y = 0; y < gridManager.Height; y++)
             {
-                var element = gridManager[x, y];
+                var element = gridManager.GetElement(x, y);
                 if (element is Empty) continue;
                 int invertedY = (gridManager.Height - 1 - y);
                 var rect = new Rectangle(x * pixelSize, invertedY * pixelSize, pixelSize, pixelSize);
