@@ -11,6 +11,8 @@ public abstract class Element
 
     public bool HasBeenUpdated { get; set; } = true;
 
+    public byte Clock;
+
     protected Element(Color color)
     {
         Color = color;

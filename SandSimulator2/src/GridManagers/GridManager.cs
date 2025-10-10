@@ -11,6 +11,8 @@ public class GridManager
     public int Width { get; }
     public int Height { get; }
 
+    public byte Generation { get; set; } = 0;
+
 
 
     // Indexers - Adoro C# - No tocar si no sabes que pedo porfas :)

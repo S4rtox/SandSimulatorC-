@@ -20,9 +20,4 @@ public abstract class KineticElement : Element
 
     }
 
-
-    public override void ReactToOther(GridManager gridManager, Element element, GameTime delta)
-    {
-        throw new System.NotImplementedException();
-    }
 }
