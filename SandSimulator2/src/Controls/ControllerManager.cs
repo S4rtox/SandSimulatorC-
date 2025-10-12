@@ -15,6 +15,7 @@ public class ControllerManager
     private readonly int _pixelSize;
     private bool _isReplacing = false;
     private bool _clickedBefore = false;
+    private bool middleClickedBefore = false;
 
     private int _scrollWheelValue = 0;
 
@@ -124,6 +125,16 @@ public class ControllerManager
         }else if (mouseState.RightButton == ButtonState.Released)
         {
 
+        }
+
+        //Clear on middle
+        if(mouseState.MiddleButton == ButtonState.Pressed && !middleClickedBefore)
+        {
+            _gridManager.Clear();
+            middleClickedBefore = true;
+        }else if(mouseState.MiddleButton == ButtonState.Released && middleClickedBefore)
+        {
+            middleClickedBefore = false;
         }
 
 

@@ -17,7 +17,7 @@ public class Game1 : Game
     private GraphicManager _graphicManager;
     private ControllerManager _controllerManager;
 
-    private const int PixelSize = 4;
+    private const int PixelSize = 3;
 
     public Game1()
     {
