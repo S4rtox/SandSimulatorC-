@@ -81,7 +81,7 @@ public class GridManager
             {
                 var element = _grid[x, y];
                 if (element is Empty) continue;
-                if (element.Clock - Generation == 1) continue;
+                if (element.Clock == (byte)(Generation+1)) continue;
 
                 element.Interact(new InteractionAPI(x, y, this), new ElementAPI(x, y, this));
             }
@@ -99,7 +99,7 @@ public class GridManager
 
     private void UpdateCell(Element element,ElementAPI api, GameTime delta)
     {
-        if (element is Empty || element.Clock - Generation == 1) return;
+        if (element is Empty || element.Clock == (byte)(Generation+1)) return;
         element.Update( api, delta);
     }
 
