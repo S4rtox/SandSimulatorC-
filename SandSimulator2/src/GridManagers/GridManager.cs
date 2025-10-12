@@ -57,6 +57,20 @@ public class GridManager
     }
 
 
+
+    public void Clear()
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                _grid[x, y] = Empty.Instance;
+            }
+        }
+        Generation = 0;
+    }
+
+
     public void Update(GameTime delta)
     {
         Generation++;

@@ -32,7 +32,6 @@ public class Sand : Element
         if (belowElement is Empty)
         {
             api.MoveTo(0, -1);
-
         }else if (api.GetElement(-1, -1) is Empty)
         {
             api.MoveTo(-1, -1);
