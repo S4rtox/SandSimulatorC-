@@ -14,7 +14,7 @@ public class Flesh : Element
         var Flesh2 = new Color(235, 192, 170);
         var Flesh3 = new Color(255, 210, 190);
 
-        Random randomFlesh = new Random();
+        Random randomFlesh = RandomProvider.Random;
         int numFlesh = randomFlesh.Next(0, 4);
 
         Color[] FleshColors = { Flesh0, Flesh1, Flesh2, Flesh3 };
@@ -22,8 +22,14 @@ public class Flesh : Element
         Color = FleshColors[numFlesh];
 
     }
-    
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+
+
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
+    {
+
+    }
+
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 
     }

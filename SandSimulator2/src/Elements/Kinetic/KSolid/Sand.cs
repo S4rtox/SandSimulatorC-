@@ -16,7 +16,7 @@ public class Sand : Element
         var Color2 = new Color(251,227,188);
         var Color3 = new Color(255,240,217);
         
-        Random random = new Random();
+        Random random = RandomProvider.Random;
         int num = random.Next(0, 3);
         
         Color[] color = {Color0,Color1, Color2, Color3 };
@@ -25,33 +25,29 @@ public class Sand : Element
     }
 
 
-    //Metodo que se ejecuta por cada frame, en cada elemento
-
-
-    public override void Update(Vector2I position, GridManager gridManager, GameTime delta)
+    public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
+        var belowElement = api.GetElement(0, -1);
         //Si el elemento de abajo es vacio, se mueve hacia abajo
-        if (gridManager[position.X, position.Y - 1] is Empty)
+        if (belowElement is Empty)
         {
-            gridManager[position.X, position.Y - 1] = this;
-            gridManager[position.X, position.Y] = Empty.Instance;
-            return;
-        }
+            api.MoveTo(0, -1);
+        }else if (api.GetElement(-1, -1) is Empty)
+        {
+            api.MoveTo(-1, -1);
 
+        }
+        else if (api.GetElement(1, -1) is Empty)
+        {
+            api.MoveTo(1, -1);
+
+        }
         //Si el elemento de abajo a la izquierda es vacio, se mueve hacia abajo a la izquierda
-        if (gridManager[position.X - 1, position.Y - 1] is Empty)
-        {
-            gridManager[position.X - 1, position.Y - 1] = this;
-            gridManager[position.X, position.Y] = Empty.Instance;
-            return;
-        }
 
-        //Si el elemento de abajo a la derecha es vacio, se mueve hacia abajo a la derecha
-        if (gridManager[position.X + 1, position.Y - 1] is Empty)
-        {
-            gridManager[position.X + 1, position.Y - 1] = this;
-            gridManager[position.X, position.Y] = Empty.Instance;
-            return;
-        }
+    }
+
+    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
+    {
+
     }
 }

@@ -15,6 +15,7 @@ public class ControllerManager
     private readonly int _pixelSize;
     private bool _isReplacing = false;
     private bool _clickedBefore = false;
+    private bool middleClickedBefore = false;
 
     private int _scrollWheelValue = 0;
 
@@ -126,6 +127,16 @@ public class ControllerManager
 
         }
 
+        //Clear on middle
+        if(mouseState.MiddleButton == ButtonState.Pressed && !middleClickedBefore)
+        {
+            _gridManager.Clear();
+            middleClickedBefore = true;
+        }else if(mouseState.MiddleButton == ButtonState.Released && middleClickedBefore)
+        {
+            middleClickedBefore = false;
+        }
+
 
     }
 
@@ -146,7 +157,7 @@ public class ControllerManager
         }
         else if (delta < 0)
         {
-            Radius = Math.Max(1, Radius - 1);
+            Radius = Math.Max(0, Radius - 1);
         }
         _scrollWheelValue = mouseState.ScrollWheelValue;
     }
@@ -154,22 +165,23 @@ public class ControllerManager
 
     private void Draw(Vector2I CenterPosition,bool isReplacing = false, Element element = null )
     {
-        for (var x = -Radius; x < Radius; x++)
+        for (var x = -Radius; x <= Radius; x++)
         {
-            for (var y = -Radius; y < Radius; y++)
+            for (var y = -Radius; y <= Radius; y++)
             {
                 var offset = new Vector2I(x, y);
                 var targetPosition = CenterPosition + offset;
 
                 //Para que sea un circulito :)
-
                 if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
                 if (!_gridManager.IsInBounds(targetPosition)) continue;
 
                 // Si estamos remplazando
-                if(!isReplacing && _gridManager[x+CenterPosition.X,CenterPosition.Y+y] is not Empty) continue;
+                if(!isReplacing && _gridManager.GetElement(targetPosition.X, targetPosition.Y) is not Empty) continue;
 
-                _gridManager[targetPosition] = element?? (Element)Activator.CreateInstance(SelectedElementType);
+                var newElement = element ?? (Element)Activator.CreateInstance(SelectedElementType);
+                _gridManager.SetElement(targetPosition.X, targetPosition.Y, newElement);
+                newElement!.Clock = (byte)(_gridManager.Generation + 1); // Evita doble actualización en el mismo ciclo
             }
 
         }
