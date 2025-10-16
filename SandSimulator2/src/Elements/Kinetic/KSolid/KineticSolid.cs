@@ -6,6 +6,11 @@ namespace SandSimulator2.Elements.Kinetic;
 
 public class KineticSolid : Element
 {
+
+
+    public string Density { get; set; }
+
+
     public KineticSolid(Color color) : base(color)
     {
     }
@@ -20,4 +25,6 @@ public class KineticSolid : Element
     {
 
     }
+    
+    
 }

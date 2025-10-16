@@ -5,36 +5,27 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
-public class Water : KLiquid
+public class KLiquid : Element
 {
+
+    protected int Dispertion { get; set; }
+    protected int Density { get; set; }
     
     
-    public Water() : base(dispertion: 7)
+
+    public KLiquid(int dispertion, int density) : base(Color.Blue)
     {
-        
-        // Water
-        var Water0 = new Color(37, 124, 196);
-        var Water1 = new Color(57, 159, 225);
-        var Water2 = new Color(33, 147, 212);
-        var Water3 = new Color(104, 194, 243);
-        var Water4 = new Color(95, 175, 218);
-
-        Random randomWater = RandomProvider.Random;
-
-        int numWater = randomWater.Next(0, 5);
-
-        Color[] WaterColors = { Water0, Water1, Water2, Water3, Water4 };
-
-        Color = WaterColors[numWater];
-
+        this.Dispertion = MDispertion(dispertion);
     }
+
 
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
-        WaterPattern();
+
         // Si el elemento de abajo es vacío, se mueve hacia abajo
         if (api.GetElement(0, -1) is Empty)
         {
+            api.SwapWith
             api.MoveTo(0, -1);
             return;
         }
@@ -79,15 +70,13 @@ public class Water : KLiquid
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 
-
-
     }
 
     // Nuevo método para dispersión usando ElementAPI
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
-        int maxDisp = MDispertion(Dispertion);
+        int maxDisp = Dispertion;
         for (int i = 1; i <= maxDisp; i++)
         {
             if (api.GetElement(i * direction, 0) is Empty) continue;
@@ -96,28 +85,26 @@ public class Water : KLiquid
         }
         api.MoveTo(maxDisp * direction, 0);
     }
-
-    
-
-    public void WaterPattern()
+    public int MDispertion(int dispertion)
     {
+        
+        Random disp = RandomProvider.Random;
+         int j = disp.Next(0, dispertion);
 
-        var Water0 = new Color(37, 124, 196);
-        var Water1 = new Color(57, 159, 225);
-        var Water2 = new Color(33, 147, 212);
-        var Water3 = new Color(104, 194, 243);
-        var Water4 = new Color(95, 175, 218);
-        Color[] WaterColors = { Water0, Water1, Water2, Water3, Water4 };
-
-        // Probabilidad de cambiar de color
-        Random rand = RandomProvider.Random;
-        if (rand.NextDouble() < 0.005)
+        if (j == 0)
         {
-            int numWater = rand.Next(0, WaterColors.Length);
-            Color = WaterColors[numWater];
+            return 1;
         }
+        if (j  == 1)
+        {
+            return 2;
+        }
+        if (j == 2)
+        {
+            return 3;
+        }
+        return 0;
     }
-
 
 
 }
