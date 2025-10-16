@@ -41,7 +41,12 @@ if(element == null) throw new System.InvalidOperationException("Could not find a
             return gue;
         });
     }
-    public ButtonStandard ButtonStandardInstance { get; protected set; }
+    public StackPanel StackPanelInstance { get; protected set; }
+    public TextBox Ip { get; protected set; }
+    public TextBox Port { get; protected set; }
+    public ButtonDeny Host { get; protected set; }
+    public ButtonConfirm Join { get; protected set; }
+    public StackPanel ButtonsStackPanels { get; protected set; }
 
     public ElementMenu(InteractiveGue visual) : base(visual)
     {
@@ -55,7 +60,12 @@ if(element == null) throw new System.InvalidOperationException("Could not find a
     protected override void ReactToVisualChanged()
     {
         base.ReactToVisualChanged();
-        ButtonStandardInstance = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ButtonStandard>(this.Visual,"ButtonStandardInstance");
+        StackPanelInstance = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"StackPanelInstance");
+        Ip = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<TextBox>(this.Visual,"Ip");
+        Port = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<TextBox>(this.Visual,"Port");
+        Host = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ButtonDeny>(this.Visual,"Host");
+        Join = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<ButtonConfirm>(this.Visual,"Join");
+        ButtonsStackPanels = global::Gum.Forms.GraphicalUiElementFormsExtensions.TryGetFrameworkElementByName<StackPanel>(this.Visual,"ButtonsStackPanels");
         CustomInitialize();
     }
     //Not assigning variables because Object Instantiation Type is set to By Name rather than Fully In Code

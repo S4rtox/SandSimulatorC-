@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using SandSimulator2.Controls;
 using SandSimulator2.Elements;
+using Vector2 = System.Numerics.Vector2;
 
 namespace SandSimulator2.GridManagers;
 
@@ -13,9 +17,7 @@ public class GridManager
 
     public byte Generation { get; private set; } = 0;
 
-
-
-
+    private readonly ConcurrentQueue<PlaceAction> _actionQueue = new();
 
     // Indexers - Adoro C# - No tocar si no sabes que pedo porfas :)
     private Element this[int x, int y]
@@ -73,6 +75,10 @@ public class GridManager
 
     public void Update(GameTime delta)
     {
+        while (_actionQueue.TryDequeue(out var action))
+        {
+            HandlePlaceAction(action);
+        }
         Generation++;
 
         for (var y = Height - 1; y >= 0; y--)
@@ -187,5 +193,65 @@ public class GridManager
     public void SetElement(int x, int y, Element element)
     {
         this[x, y] = element;
+    }
+
+    public void EnqueueAction(PlaceAction action)
+    {
+        _actionQueue.Enqueue(action);
+    }
+
+    public GridState GetGridState()
+    {
+        var elementInfos = new List<ElementInfo>();
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                var element = _grid[x, y];
+                if (element is not Empty)
+                {
+                    elementInfos.Add(new ElementInfo { X = x, Y = y, ElementType = element.GetType() });
+                }
+            }
+        }
+        return new GridState { Elements = elementInfos };
+    }
+
+    public void SetGridState(GridState gridState)
+    {
+        Clear();
+        foreach (var elementInfo in gridState.Elements)
+        {
+            var newElement = elementInfo.ElementType == typeof(Empty)
+                ? Empty.Instance
+                : (Element)Activator.CreateInstance(elementInfo.ElementType);
+            SetElement(elementInfo.X, elementInfo.Y, newElement);
+        }
+    }
+
+    private void HandlePlaceAction(PlaceAction action)
+    {
+        for (var x = -action.radius; x <= action.radius; x++)
+        {
+            for (var y = -action.radius; y <= action.radius; y++)
+            {
+                var offset = new Vector2I(x, y);
+                var targetPosition = action.position + offset;
+
+                //Para que sea un circulito :)
+                if (Vector2.Distance(action.position, action.position + offset) > action.radius) continue;
+                if (!IsInBounds(targetPosition)) continue;
+
+                // Si estamos remplazando
+                if(!action.isReplacing && GetElement(targetPosition.X, targetPosition.Y) is not Empty) continue;
+
+                var newElement = action.elementType == typeof(Empty)
+                    ? Empty.Instance
+                    : (Element)Activator.CreateInstance(action.elementType);
+
+                SetElement(targetPosition.X, targetPosition.Y, newElement);
+                newElement!.Clock = (byte)(Generation + 1); // Evita doble actualización en el mismo ciclo
+            }
+        }
     }
 }
