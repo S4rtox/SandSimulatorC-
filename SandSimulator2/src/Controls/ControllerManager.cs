@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using SandSimulator2.Elements;
 using SandSimulator2.Elements.Kinetic;
 using SandSimulator2.GridManagers;
-using Vector2 = System.Numerics.Vector2;
 
 namespace SandSimulator2.Controls;
 
@@ -17,6 +16,11 @@ public class ControllerManager
     private bool _clickedBefore = false;
     private bool middleClickedBefore = false;
 
+
+    public Action<PlaceAction> OnPlaceAction;
+
+    private bool isJClickedBefore = false;
+    private bool isGClickedBefore = false;
     private int _scrollWheelValue = 0;
 
 
@@ -58,6 +62,27 @@ public class ControllerManager
         {
             _isReplacing = false;
         }
+
+        if (keyboardState.IsKeyDown(Keys.J) && !isJClickedBefore)
+        {
+            isJClickedBefore = true;
+            // Logic to start as client will be in Game1.cs
+        }
+        else if (keyboardState.IsKeyUp(Keys.J) && isJClickedBefore)
+        {
+            isJClickedBefore = false;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.G) && !isGClickedBefore)
+        {
+            isGClickedBefore = true;
+            // Logic to start as server will be in Game1.cs
+        }
+        else if (keyboardState.IsKeyUp(Keys.G) && isGClickedBefore)
+        {
+            isGClickedBefore = false;
+        }
+
 
         // Cambiar el tipo de elemento con los numeros
         if (keyboardState.IsKeyDown(Keys.D1))
@@ -111,7 +136,9 @@ public class ControllerManager
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
             var mousePosition = getGridRelativePosition(mouseState.X, mouseState.Y, _gridManager);
-            Draw(mousePosition, _isReplacing);
+            var action = new PlaceAction(mousePosition, Radius, SelectedElementType, _isReplacing);
+            _gridManager.EnqueueAction(action);
+            OnPlaceAction?.Invoke(action);
 
         }else if(mouseState.LeftButton == ButtonState.Released)
         {
@@ -121,7 +148,9 @@ public class ControllerManager
         if(mouseState.RightButton == ButtonState.Pressed)
         {
             var mousePosition = getGridRelativePosition(mouseState.X, mouseState.Y, _gridManager);
-            Draw(mousePosition, true, Empty.Instance);
+            var action = new PlaceAction(mousePosition, Radius, typeof(Empty), true);
+            _gridManager.EnqueueAction(action);
+            OnPlaceAction?.Invoke(action);
         }else if (mouseState.RightButton == ButtonState.Released)
         {
 
@@ -163,28 +192,5 @@ public class ControllerManager
     }
 
 
-    private void Draw(Vector2I CenterPosition,bool isReplacing = false, Element element = null )
-    {
-        for (var x = -Radius; x <= Radius; x++)
-        {
-            for (var y = -Radius; y <= Radius; y++)
-            {
-                var offset = new Vector2I(x, y);
-                var targetPosition = CenterPosition + offset;
-
-                //Para que sea un circulito :)
-                if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
-                if (!_gridManager.IsInBounds(targetPosition)) continue;
-
-                // Si estamos remplazando
-                if(!isReplacing && _gridManager.GetElement(targetPosition.X, targetPosition.Y) is not Empty) continue;
-
-                var newElement = element ?? (Element)Activator.CreateInstance(SelectedElementType);
-                _gridManager.SetElement(targetPosition.X, targetPosition.Y, newElement);
-                newElement!.Clock = (byte)(_gridManager.Generation + 1); // Evita doble actualización en el mismo ciclo
-            }
-
-        }
-    }
 
 }

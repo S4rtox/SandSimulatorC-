@@ -1,0 +1,237 @@
+{
+  "UserEvents": {
+    "0500d3f59bfb7f36501711b5e2d0258c881c36863cd51625c2bcad55e72f1e2c": [
+      {
+        "NewName": "ElementMenu",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 0,
+        "TimestampUtc": "2025-10-07T04:16:08.5808801Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonIconInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-07T04:16:38.1201656Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/ButtonIcon ButtonIconInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-07T04:16:52.9826469Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonStandardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-07T04:17:23.414134Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonDenyInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:47:53.1212805Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/ButtonStandard ButtonStandardInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T01:47:59.8913116Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonConfirmInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:48:10.7631077Z"
+      },
+      {
+        "NewName": "ElementMenu.StackPanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:48:54.6757267Z"
+      },
+      {
+        "NewName": "ElementMenu.KeyboardInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:51:55.5611795Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/Keyboard KeyboardInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T01:52:00.3389528Z"
+      },
+      {
+        "NewName": "ElementMenu.ToastInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:52:27.5013558Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/Toast ToastInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T01:52:31.6482945Z"
+      },
+      {
+        "NewName": "ElementMenu.TextBoxInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:52:37.4073332Z"
+      },
+      {
+        "NewName": "ElementMenu.StackPanelInstance1",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:53:31.5945801Z"
+      },
+      {
+        "NewName": "ElementMenu.Ip",
+        "OldName": "ElementMenu.TextBoxInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T01:57:02.5605734Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonsStackPanels",
+        "OldName": "ElementMenu.StackPanelInstance1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T01:57:13.0833573Z"
+      },
+      {
+        "NewName": "ElementMenu.Host",
+        "OldName": "ElementMenu.ButtonDenyInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T01:57:17.585768Z"
+      },
+      {
+        "NewName": "ElementMenu.Join",
+        "OldName": "ElementMenu.Host",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T01:57:20.2258414Z"
+      },
+      {
+        "NewName": "ElementMenu.Host",
+        "OldName": "ElementMenu.ButtonConfirmInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T01:57:25.5533177Z"
+      },
+      {
+        "NewName": "ElementMenu.PanelInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T01:58:03.1934193Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/Panel PanelInstance in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T01:58:12.5441026Z"
+      },
+      {
+        "NewName": "ElementMenu.Host1",
+        "OldName": "ElementMenu.Join",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T02:00:02.3931992Z"
+      },
+      {
+        "NewName": "ElementMenu.Join",
+        "OldName": "ElementMenu.Host",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T02:00:08.3361949Z"
+      },
+      {
+        "NewName": "ElementMenu.Host",
+        "OldName": "ElementMenu.Host1",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T02:00:22.2017689Z"
+      },
+      {
+        "NewName": "ElementMenu.TextBoxInstance",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T02:00:56.9023776Z"
+      },
+      {
+        "NewName": "ElementMenu.2",
+        "OldName": "ElementMenu.TextBoxInstance",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T02:01:58.9672498Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/ButtonDeny Host in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T02:04:52.6272436Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/ButtonConfirm Join in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T02:04:52.6437644Z"
+      },
+      {
+        "NewName": null,
+        "OldName": "ElementMenu.Controls/StackPanel ButtonsStackPanels in ElementMenu",
+        "ElementType": "Screens",
+        "EventType": 6,
+        "TimestampUtc": "2025-10-16T02:04:52.6588917Z"
+      },
+      {
+        "NewName": "ElementMenu.Host",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T02:04:54.8557727Z"
+      },
+      {
+        "NewName": "ElementMenu.Join",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T02:04:54.9329872Z"
+      },
+      {
+        "NewName": "ElementMenu.ButtonsStackPanels",
+        "OldName": null,
+        "ElementType": "Screens",
+        "EventType": 5,
+        "TimestampUtc": "2025-10-16T02:04:55.0100411Z"
+      },
+      {
+        "NewName": "ElementMenu.Port",
+        "OldName": "ElementMenu.2",
+        "ElementType": "Screens",
+        "EventType": 7,
+        "TimestampUtc": "2025-10-16T02:05:06.2473551Z"
+      }
+    ]
+  }
+}
