@@ -1,15 +1,21 @@
 using System;
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using SandSimulator2.GridManagers;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento sólido granular que cae por gravedad y se apila.
+/// </summary>
 public class Sand : Element
 {
+    /// <summary>
+    /// Crea una partícula de arena con un color elegido aleatoriamente dentro de una paleta.
+    /// </summary>
     public Sand() : base(new Color(194, 178, 128))
     {
+        Density = 1.5f;
         //Primero tenemos los sprites de la arena:
         var Color0 = new Color(234,190,117);
         var Color1 = new Color(245,209,151);
@@ -24,28 +30,35 @@ public class Sand : Element
         Color = color[num];
     }
 
-
+    /// <summary>
+    /// Actualiza el comportamiento de la arena: cae y, si no puede, se desplaza diagonalmente.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         var belowElement = api.GetElement(0, -1);
-        //Si el elemento de abajo es vacio, se mueve hacia abajo
-        if (belowElement is Empty)
+        if (Density > belowElement.Density)
         {
-            api.MoveTo(0, -1);
-        }else if (api.GetElement(-1, -1) is Empty)
-        {
-            api.MoveTo(-1, -1);
-
+            api.SwapWith(0, -1);
+            return;
         }
-        else if (api.GetElement(1, -1) is Empty)
+
+        var belowLeftElement = api.GetElement(-1, -1);
+        if (Density > belowLeftElement.Density)
         {
-            api.MoveTo(1, -1);
-
+            api.SwapWith(-1, -1);
+            return;
         }
-        //Si el elemento de abajo a la izquierda es vacio, se mueve hacia abajo a la izquierda
 
+        var belowRightElement = api.GetElement(1, -1);
+        if (Density > belowRightElement.Density)
+        {
+            api.SwapWith(1, -1);
+        }
     }
 
+    /// <summary>
+    /// La arena no implementa interacciones especiales por ahora.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

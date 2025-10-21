@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements;
 
+/// <summary>
+/// Elemento sólido carne; actualmente inerte.
+/// </summary>
 public class Flesh : Element
 {
     public Flesh() : base(new Color())
@@ -23,12 +26,17 @@ public class Flesh : Element
 
     }
 
-
+    /// <summary>
+    /// La carne no cambia en el tiempo (sin actualización).
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
 
     }
 
+    /// <summary>
+    /// La carne no tiene interacciones activas.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

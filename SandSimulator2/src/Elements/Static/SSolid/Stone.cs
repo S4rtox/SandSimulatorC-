@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements;
 
+/// <summary>
+/// Elemento sólido inerte de piedra.
+/// </summary>
 public class Stone:Element
 {
     public Stone() : base(Color.Gray)
@@ -24,12 +27,17 @@ public class Stone:Element
 
     }
 
-
+    /// <summary>
+    /// La piedra no cambia en el tiempo (sin actualización).
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
 
     }
 
+    /// <summary>
+    /// La piedra no tiene interacciones activas.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

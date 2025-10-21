@@ -1,1 +1,1 @@
-MierdaSimulador
+Simulador de arena

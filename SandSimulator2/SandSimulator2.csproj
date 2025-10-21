@@ -5,14 +5,17 @@
         <RollForward>Major</RollForward>
         <PublishReadyToRun>false</PublishReadyToRun>
         <TieredCompilation>false</TieredCompilation>
+        <!-- Generar archivo de documentación XML -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\SandSimulator2.xml</DocumentationFile>
     </PropertyGroup>
     <PropertyGroup>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <ApplicationIcon>Icon.ico</ApplicationIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Remove="Icon.ico"/>
-        <None Remove="Icon.bmp"/>
+        <None Remove="Icon.ico" />
+        <None Remove="Icon.bmp" />
     </ItemGroup>
     <ItemGroup>
         <EmbeddedResource Include="Icon.ico">
@@ -23,15 +26,23 @@
         </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105"/>
-        <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105"/>
+        <PackageReference Include="Gum.MonoGame" Version="2025.9.27.1" />
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105" />
+        <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.2.1105" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="src\Elements\Interfaces\" />
       <Folder Include="src\Elements\Static\SGas\" />
+      <Folder Include="src\Elements\Static\SLiquid\" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="Content\GumProject\**\*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
     <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
-        <Message Text="Restoring dotnet tools" Importance="High"/>
-        <Exec Command="dotnet tool restore"/>
+        <Message Text="Restoring dotnet tools" Importance="High" />
+        <Exec Command="dotnet tool restore" />
     </Target>
 </Project>

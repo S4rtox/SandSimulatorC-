@@ -1,17 +1,24 @@
 using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
+using SandSimulator2.Elements.Kinetic.KSolid;
 using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento líquido que fluye hacia abajo y se dispersa horizontalmente.
+/// </summary>
 public class Water : Element
 {
+    /// <summary>
+    /// Dispersión horizontal máxima al moverse lateralmente.
+    /// </summary>
     public int Dispertion { get; set; }
     
     
     public Water() : base(Color.Blue)
     {
+        Density = 1.0f;
         this.Dispertion = MDispertion();
         // Water
         var Water0 = new Color(37, 124, 196);
@@ -30,59 +37,100 @@ public class Water : Element
 
     }
 
+    /// <summary>
+    /// Actualiza el comportamiento del agua: cae si puede o se dispersa lateralmente.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         WaterPattern();
-        // Si el elemento de abajo es vacío, se mueve hacia abajo
-        if (api.GetElement(0, -1) is Empty)
+
+        var belowElement = api.GetElement(0, -1);
+        if (Density > belowElement.Density)
         {
-            api.MoveTo(0, -1);
+            api.SwapWith(0, -1);
             return;
         }
-        // Si el elemento de abajo a la izquierda es vacío, se mueve hacia abajo a la izquierda
-        if (api.GetElement(-1, -1) is Empty)
+
+        var belowLeftElement = api.GetElement(-1, -1);
+        if (Density > belowLeftElement.Density)
         {
-            api.MoveTo(-1, -1);
+            api.SwapWith(-1, -1);
             return;
         }
-        // Si el elemento de abajo a la derecha es vacío, se mueve hacia abajo a la derecha
-        if (api.GetElement(1, -1) is Empty)
+
+        var belowRightElement = api.GetElement(1, -1);
+        if (Density > belowRightElement.Density)
         {
-            api.MoveTo(1, -1);
+            api.SwapWith(1, -1);
             return;
         }
-        // Movimiento horizontal aleatorio si hay espacio vacío
+
+        // Movimiento horizontal aleatorio
         Random rand = RandomProvider.Random;
         bool tryLeft = rand.Next(0, 2) == 0; // 0 = izquierda, 1 = derecha
         var leftElement = api.GetElement(-1, 0);
         var rightElement = api.GetElement(1, 0);
 
-        // Checa si ambos lados están vacíos para intentar moverse a cualquiera de los dos lados
         if (leftElement is Empty && rightElement is Empty)
         {
             ApplyDispertion(tryLeft, api);
             return;
         }
-        // Checa si solo el lado izquierdo está vacío
         if (leftElement is Empty)
         {
             ApplyDispertion(true, api);
             return;
         }
-        // Checa si solo el lado derecho está vacío
         if (rightElement is Empty)
         {
             ApplyDispertion(false, api);
-            return;
         }
     }
 
+    /// <summary>
+    /// Agua no implementa interacciones activas por defecto.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
+        Random rand = RandomProvider.Random;
+        // Revisa las 8 celdas circundantes
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i == 0 && j == 0) continue; // Omite la celda actual
 
+                var neighbor = interactionApi.GetElement(i, j);
+
+                // Si el vecino es arena, la convierte en arena mojada
+                if (neighbor is Sand)
+                {
+                    elementApi.SetElement(i, j, new WetSand());
+                    // El agua se consume
+                    if (rand.Next(0, 5) == 0) // 1 de 5 probabilidades de desaparecer
+                    {
+                        elementApi.SetElement(0, 0, Empty.Instance);
+                        return;
+                    }
+                }
+                // Si el vecino es tierra, la convierte en lodo
+                else if (neighbor is Dirt)
+                {
+                    elementApi.SetElement(i, j, new Mud());
+                    // El agua se consume
+                    if (rand.Next(0, 5) == 0) // 1 de 5 probabilidades de desaparecer
+                    {
+                        elementApi.SetElement(0, 0, Empty.Instance);
+                        return;
+                    }
+                }
+            }
+        }
     }
 
-    // Nuevo método para dispersión usando ElementAPI
+    /// <summary>
+    /// Aplica la dispersión horizontal en la dirección indicada hasta el máximo permitido.
+    /// </summary>
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
@@ -96,6 +144,9 @@ public class Water : Element
         api.MoveTo(maxDisp * direction, 0);
     }
 
+    /// <summary>
+    /// Calcula un valor de dispersión máximo aleatorio (1..3).
+    /// </summary>
     public int MDispertion()
     {
         int dispertion = 3;
@@ -117,6 +168,9 @@ public class Water : Element
         return 0;
     }
 
+    /// <summary>
+    /// Cambia ocasionalmente el color del agua para dar variación visual.
+    /// </summary>
     public void WaterPattern()
     {
 
@@ -135,7 +189,5 @@ public class Water : Element
             Color = WaterColors[numWater];
         }
     }
-
-
 
 }
