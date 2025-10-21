@@ -4,6 +4,10 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements;
 
+/// <summary>
+/// Elemento vacío (inmutable) que representa la ausencia de materia en la grilla.
+/// Implementado como un <em>singleton</em>.
+/// </summary>
 public sealed class Empty : Element
 {
 
@@ -15,6 +19,9 @@ public sealed class Empty : Element
 
     private static readonly object LockObject = new();
 
+    /// <summary>
+    /// El reloj del vacío siempre es 0 y no se actualiza.
+    /// </summary>
     public override byte Clock
     {
         get => 0;
@@ -24,7 +31,9 @@ public sealed class Empty : Element
         }
     }
 
-
+    /// <summary>
+    /// Instancia única del elemento vacío.
+    /// </summary>
     public static Empty Instance
     {
         get
@@ -44,11 +53,17 @@ public sealed class Empty : Element
         Density = 0.0f;
     }
 
+    /// <summary>
+    /// Empty no debe actualizarse nunca; lanzar excepción si ocurre.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         throw new InvalidOperationException("Empty element tried to make an update operation");
     }
 
+    /// <summary>
+    /// Empty no interactúa con otros elementos.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

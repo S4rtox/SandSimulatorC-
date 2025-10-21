@@ -1,13 +1,18 @@
 using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using SandSimulator2.Elements.Kinetic.KSolid;
 using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento líquido que fluye hacia abajo y se dispersa horizontalmente.
+/// </summary>
 public class Water : Element
 {
+    /// <summary>
+    /// Dispersión horizontal máxima al moverse lateralmente.
+    /// </summary>
     public int Dispertion { get; set; }
     
     
@@ -32,6 +37,9 @@ public class Water : Element
 
     }
 
+    /// <summary>
+    /// Actualiza el comportamiento del agua: cae si puede o se dispersa lateralmente.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         WaterPattern();
@@ -79,6 +87,9 @@ public class Water : Element
         }
     }
 
+    /// <summary>
+    /// Agua no implementa interacciones activas por defecto.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
         Random rand = RandomProvider.Random;
@@ -117,7 +128,9 @@ public class Water : Element
         }
     }
 
-    // Nuevo método para dispersión usando ElementAPI
+    /// <summary>
+    /// Aplica la dispersión horizontal en la dirección indicada hasta el máximo permitido.
+    /// </summary>
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
@@ -131,6 +144,9 @@ public class Water : Element
         api.MoveTo(maxDisp * direction, 0);
     }
 
+    /// <summary>
+    /// Calcula un valor de dispersión máximo aleatorio (1..3).
+    /// </summary>
     public int MDispertion()
     {
         int dispertion = 3;
@@ -152,6 +168,9 @@ public class Water : Element
         return 0;
     }
 
+    /// <summary>
+    /// Cambia ocasionalmente el color del agua para dar variación visual.
+    /// </summary>
     public void WaterPattern()
     {
 
@@ -170,7 +189,5 @@ public class Water : Element
             Color = WaterColors[numWater];
         }
     }
-
-
 
 }

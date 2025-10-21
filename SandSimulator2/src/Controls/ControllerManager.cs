@@ -4,10 +4,12 @@ using Microsoft.Xna.Framework.Input;
 using SandSimulator2.Elements;
 using SandSimulator2.Elements.Kinetic;
 using SandSimulator2.GridManagers;
-using Vector2 = System.Numerics.Vector2;
 
 namespace SandSimulator2.Controls;
 
+/// <summary>
+/// Gestiona la entrada del usuario (teclado/ratón) y la traduce en acciones sobre la grilla.
+/// </summary>
 public class ControllerManager
 {
 
@@ -17,9 +19,21 @@ public class ControllerManager
     private bool _clickedBefore = false;
     private bool middleClickedBefore = false;
 
+
+    /// <summary>
+    /// Evento que se dispara cuando el usuario realiza una acción de colocación.
+    /// </summary>
+    public Action<PlaceAction> OnPlaceAction;
+
+    private bool isJClickedBefore = false;
+    private bool isGClickedBefore = false;
     private int _scrollWheelValue = 0;
 
 
+    /// <summary>
+    /// Tipo de elemento seleccionado actualmente para colocar.
+    /// </summary>
+    /// <exception cref="ArgumentException">Si el tipo no hereda de <see cref="Element"/>.</exception>
     public Type SelectedElementType
     {
         get => _selectedElementType;
@@ -32,14 +46,25 @@ public class ControllerManager
     }
     private Type _selectedElementType = typeof(Sand);
 
+    /// <summary>
+    /// Radio del pincel de colocación en celdas.
+    /// </summary>
     public int Radius { get; set; } = 5;
 
+    /// <summary>
+    /// Crea un nuevo administrador de control para la grilla indicada.
+    /// </summary>
+    /// <param name="gridManager">Administrador de grilla objetivo.</param>
+    /// <param name="pixelSize">Tamaño del pixel lógico (escala de celda a pantalla).</param>
     public ControllerManager(GridManager gridManager, int pixelSize)
     {
         _gridManager = gridManager;
         _pixelSize = pixelSize;
     }
 
+    /// <summary>
+    /// Procesa la entrada de usuario para este cuadro.
+    /// </summary>
     public void HandleInput(GameTime time)
     {
         HandleKeyboard();
@@ -58,6 +83,27 @@ public class ControllerManager
         {
             _isReplacing = false;
         }
+
+        if (keyboardState.IsKeyDown(Keys.J) && !isJClickedBefore)
+        {
+            isJClickedBefore = true;
+            // Logic to start as client will be in Game1.cs
+        }
+        else if (keyboardState.IsKeyUp(Keys.J) && isJClickedBefore)
+        {
+            isJClickedBefore = false;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.G) && !isGClickedBefore)
+        {
+            isGClickedBefore = true;
+            // Logic to start as server will be in Game1.cs
+        }
+        else if (keyboardState.IsKeyUp(Keys.G) && isGClickedBefore)
+        {
+            isGClickedBefore = false;
+        }
+
 
         // Cambiar el tipo de elemento con los numeros
         if (keyboardState.IsKeyDown(Keys.D1))
@@ -115,7 +161,9 @@ public class ControllerManager
         if(mouseState.LeftButton == ButtonState.Pressed)
         {
             var mousePosition = getGridRelativePosition(mouseState.X, mouseState.Y, _gridManager);
-            Draw(mousePosition, _isReplacing);
+            var action = new PlaceAction(mousePosition, Radius, SelectedElementType, _isReplacing);
+            _gridManager.EnqueueAction(action);
+            OnPlaceAction?.Invoke(action);
 
         }else if(mouseState.LeftButton == ButtonState.Released)
         {
@@ -125,7 +173,9 @@ public class ControllerManager
         if(mouseState.RightButton == ButtonState.Pressed)
         {
             var mousePosition = getGridRelativePosition(mouseState.X, mouseState.Y, _gridManager);
-            Draw(mousePosition, true, Empty.Instance);
+            var action = new PlaceAction(mousePosition, Radius, typeof(Empty), true);
+            _gridManager.EnqueueAction(action);
+            OnPlaceAction?.Invoke(action);
         }else if (mouseState.RightButton == ButtonState.Released)
         {
 
@@ -144,6 +194,9 @@ public class ControllerManager
 
     }
 
+    /// <summary>
+    /// Convierte coordenadas de pantalla a coordenadas de grilla.
+    /// </summary>
     private Vector2I getGridRelativePosition(int mouseX, int mouseY, GridManager _gridManager)
     {
         int gridX = mouseX / _pixelSize;
@@ -167,28 +220,5 @@ public class ControllerManager
     }
 
 
-    private void Draw(Vector2I CenterPosition,bool isReplacing = false, Element element = null )
-    {
-        for (var x = -Radius; x <= Radius; x++)
-        {
-            for (var y = -Radius; y <= Radius; y++)
-            {
-                var offset = new Vector2I(x, y);
-                var targetPosition = CenterPosition + offset;
-
-                //Para que sea un circulito :)
-                if (Vector2.Distance(CenterPosition, CenterPosition + offset) > Radius) continue;
-                if (!_gridManager.IsInBounds(targetPosition)) continue;
-
-                // Si estamos remplazando
-                if(!isReplacing && _gridManager.GetElement(targetPosition.X, targetPosition.Y) is not Empty) continue;
-
-                var newElement = element ?? (Element)Activator.CreateInstance(SelectedElementType);
-                _gridManager.SetElement(targetPosition.X, targetPosition.Y, newElement);
-                newElement!.Clock = (byte)(_gridManager.Generation + 1); // Evita doble actualización en el mismo ciclo
-            }
-
-        }
-    }
 
 }

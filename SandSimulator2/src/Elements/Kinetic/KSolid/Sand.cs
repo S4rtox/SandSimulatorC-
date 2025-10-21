@@ -1,13 +1,18 @@
 using System;
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using SandSimulator2.GridManagers;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento sólido granular que cae por gravedad y se apila.
+/// </summary>
 public class Sand : Element
 {
+    /// <summary>
+    /// Crea una partícula de arena con un color elegido aleatoriamente dentro de una paleta.
+    /// </summary>
     public Sand() : base(new Color(194, 178, 128))
     {
         Density = 1.5f;
@@ -25,7 +30,9 @@ public class Sand : Element
         Color = color[num];
     }
 
-
+    /// <summary>
+    /// Actualiza el comportamiento de la arena: cae y, si no puede, se desplaza diagonalmente.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         var belowElement = api.GetElement(0, -1);
@@ -49,6 +56,9 @@ public class Sand : Element
         }
     }
 
+    /// <summary>
+    /// La arena no implementa interacciones especiales por ahora.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

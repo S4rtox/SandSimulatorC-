@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements;
 
+/// <summary>
+/// Elemento sólido madera; actualmente inerte.
+/// </summary>
 public class Wood : Element
 {
     public Wood() : base(new Color())
@@ -23,11 +26,17 @@ public class Wood : Element
 
     }
 
+    /// <summary>
+    /// La madera no cambia en el tiempo (sin actualización).
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
 
     }
 
+    /// <summary>
+    /// La madera no tiene interacciones activas.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 
