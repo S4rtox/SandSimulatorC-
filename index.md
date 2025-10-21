@@ -1,3 +1,7 @@
+---
+_layout: landing
+---
+
 ## Arquitectura
 
 Este juego es un simulador de partículas hecho con C# y **MonoGame**, un framework de C# que maneja los gráficos del juego. El proyecto tiene una arquitectura orientada en componentes, separando lógica, gráficos, interfaz y multijugador.

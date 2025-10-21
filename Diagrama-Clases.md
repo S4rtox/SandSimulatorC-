@@ -1,3 +1,7 @@
+---
+_layout: landing
+---
+
 ```plantuml
 @startuml ola
 class Game1 {
