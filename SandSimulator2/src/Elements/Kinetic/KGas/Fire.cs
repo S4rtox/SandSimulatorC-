@@ -1,11 +1,19 @@
+// csharp
 using System;
 using Microsoft.Xna.Framework;
 using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Representa un elemento fuego con comportamiento cinético.
+/// El color se elige aleatoriamente entre tonos rojo/naranja/amarillo.
+/// </summary>
 public class Fire : Element
 {
+    /// <summary>
+    /// Crea una nueva instancia de <see cref="Fire"/> y asigna un color aleatorio.
+    /// </summary>
     public Fire() : base(new Color(20, 20, 20))
     {
         var Fire0 = new Color(255, 0, 0); // Rojo
@@ -20,6 +28,14 @@ public class Fire : Element
         Color = FireColors[numFire];
     }
 
+    /// <summary>
+    /// Actualiza el estado del fuego en cada frame.
+    /// - Posibilidad de extinguirse.
+    /// - Movimiento ascendente prioritario.
+    /// - Movimiento horizontal aleatorio con dispersión.
+    /// </summary>
+    /// <param name="api">API para consultar y modificar elementos relativos a la posición actual.</param>
+    /// <param name="delta">Información de tiempo del frame (no usada actualmente para lógica temporal).</param>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         Random rand = RandomProvider.Random;
@@ -57,7 +73,7 @@ public class Fire : Element
             api.MoveTo(1, 1);
             return;
         }
-        
+
         // Movimiento horizontal aleatorio con tendencia a la derecha
         bool tryLeft = rand.Next(0, 5) < 2; // 40% izquierda, 60% derecha
         var leftElement = api.GetElement(-1, 0);
@@ -78,7 +94,13 @@ public class Fire : Element
             ApplyDispertion(false, api);
         }
     }
-    
+
+    /// <summary>
+    /// Aplica la dispersión horizontal del fuego desplazándolo hasta <see cref="MDispertion"/> celdas
+    /// o hasta la primera celda ocupada.
+    /// </summary>
+    /// <param name="isLeft">Si es verdadero se dispersa a la izquierda; si no, a la derecha.</param>
+    /// <param name="api">API para consultar y mover el elemento relativo a la posición actual.</param>
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
@@ -91,7 +113,12 @@ public class Fire : Element
         }
         api.MoveTo(maxDisp * direction, 0);
     }
-    
+
+    /// <summary>
+    /// Determina la cantidad máxima de dispersión horizontal aleatoria.
+    /// Devuelve 1, 2 o 3 con probabilidad uniforme.
+    /// </summary>
+    /// <returns>Valor entero en {1,2,3} representando la distancia de dispersión.</returns>
     public int MDispertion()
     {
         int dispertion = 3;
@@ -104,6 +131,12 @@ public class Fire : Element
         return 0;
     }
 
+    /// <summary>
+    /// Maneja la interacción con elementos vecinos (por ejemplo, propagar fuego a la madera).
+    /// Revisa las 8 celdas circundantes y puede convertir <see cref="Wood"/> en <see cref="Fire"/>.
+    /// </summary>
+    /// <param name="interactionApi">API de solo lectura para consultar elementos vecinos.</param>
+    /// <param name="elementApi">API para modificar elementos relativos a la posición actual.</param>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
         Random rand = RandomProvider.Random;
@@ -118,7 +151,7 @@ public class Fire : Element
                 if (interactionApi.GetElement(i, j) is Wood)
                 {
                     // Probabilidad de que la madera se convierta en fuego
-                    if (rand.Next(0, 32) == 0) // 1 de 5 probabilidades
+                    if (rand.Next(0, 32) == 0) // 1 de 32 probabilidades
                     {
                         elementApi.SetElement(i, j, new Fire());
 
