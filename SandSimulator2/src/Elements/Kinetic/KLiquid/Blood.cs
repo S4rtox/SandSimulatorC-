@@ -11,6 +11,7 @@ public class Blood : Element
 {
     public Blood() : base(Color.Red)
     {
+        Density = 1.1f;
         var Blood0 = new Color(138, 7, 7);
         var Blood1 = new Color(165, 25, 25);
         var Blood2 = new Color(110, 0, 0);
@@ -22,8 +23,6 @@ public class Blood : Element
         Color[] BloodColors = { Blood0, Blood1, Blood2, Blood3 };
 
         Color = BloodColors[numBlood];
-
-
     }
 
     /// <summary>
@@ -32,45 +31,46 @@ public class Blood : Element
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         BloodPattern();
-        // Si el elemento de abajo es vacío, se mueve hacia abajo
-        if (api.GetElement(0, -1) is Empty)
+
+        var belowElement = api.GetElement(0, -1);
+        if (Density > belowElement.Density)
         {
-            api.MoveTo(0, -1);
+            api.SwapWith(0, -1);
             return;
         }
-        // Si el elemento de abajo a la izquierda es vacío, se mueve hacia abajo a la izquierda
-        if (api.GetElement(-1, -1) is Empty)
+
+        var belowLeftElement = api.GetElement(-1, -1);
+        if (Density > belowLeftElement.Density)
         {
-            api.MoveTo(-1, -1);
+            api.SwapWith(-1, -1);
             return;
         }
-        // Si el elemento de abajo a la derecha es vacío, se mueve hacia abajo a la derecha
-        if (api.GetElement(1, -1) is Empty)
+
+        var belowRightElement = api.GetElement(1, -1);
+        if (Density > belowRightElement.Density)
         {
-            api.MoveTo(1, -1);
+            api.SwapWith(1, -1);
             return;
         }
-        // Movimiento horizontal aleatorio si hay espacio vacío
+
+        // Movimiento horizontal aleatorio
         Random rand = RandomProvider.Random;
         bool tryLeft = rand.Next(0, 2) == 0;
+        
         var leftElement = api.GetElement(-1, 0);
         var rightElement = api.GetElement(1, 0);
-        // Checa si ambos lados están vacíos para intentar moverse a cualquiera de los dos lados
-        if (leftElement is Empty && rightElement is Empty)
+
+        bool canGoLeft = Density > leftElement.Density;
+        bool canGoRight = Density > rightElement.Density;
+
+        if (canGoLeft && canGoRight)
         {
-            ApplyDispertion(tryLeft, api);
+            api.SwapWith(tryLeft ? -1 : 1, 0);
             return;
         }
-        // Checa si solo el lado izquierdo está vacío
-        if (leftElement is Empty)
+        if (canGoLeft)
         {
-            ApplyDispertion(true, api);
-            return;
-        }
-        // Checa si solo el lado derecho está vacío
-        if (rightElement is Empty)
-        {
-            ApplyDispertion(false, api);
+            api.SwapWith(-1, 0);
             return;
         }
     }
@@ -84,9 +84,7 @@ public class Blood : Element
         int maxDisp = MDispertion();
         for (int i = 1; i <= maxDisp; i++)
         {
-            if (api.GetElement(i * direction, 0) is Empty) continue;
-            api.MoveTo((i - 1) * direction, 0);
-            return;
+            api.SwapWith(1, 0);
         }
         api.MoveTo(maxDisp * direction, 0);
     }
@@ -138,7 +136,7 @@ public class Blood : Element
             elementApi.SetElement(0,-1, new Blood());
         }
         if (elementAbove is Water)
-        {
+        { 
             elementApi.SetElement(0,1, new Blood());
         }
 

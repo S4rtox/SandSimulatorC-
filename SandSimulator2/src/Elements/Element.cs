@@ -12,6 +12,7 @@ public abstract class Element
     /// Color con el que se representará el elemento en pantalla.
     /// </summary>
     public Color Color { get; protected set; }
+    public float Density { get; protected set; }
 
     /// <summary>
     /// Reloj interno usado para evitar actualizaciones múltiples en el mismo ciclo de simulación.

@@ -109,24 +109,24 @@ public class ControllerManager
         if (keyboardState.IsKeyDown(Keys.D1))
         {
             SelectedElementType = typeof(Sand);
-            Console.WriteLine("Changed to sand");
+            Console.WriteLine("Changed to Sand");
         }
         else if (keyboardState.IsKeyDown(Keys.D2))
         {
             SelectedElementType = typeof(Stone);
-            Console.WriteLine("Changed to stone");
+            Console.WriteLine("Changed to Stone");
         }else if (keyboardState.IsKeyDown(Keys.D3))
         {
             SelectedElementType = typeof(Water);
-            Console.WriteLine("Changed to water");
+            Console.WriteLine("Changed to Water");
         }else if (keyboardState.IsKeyDown(Keys.D4))
         {
             SelectedElementType = typeof(Dirt);
-            Console.WriteLine("Changed to dirt");
+            Console.WriteLine("Changed to Dirt");
         }else if (keyboardState.IsKeyDown(Keys.D5))
         {
             SelectedElementType = typeof(Smoke);
-            Console.WriteLine("Changed to steam");
+            Console.WriteLine("Changed to Smoke");
         }else if (keyboardState.IsKeyDown(Keys.D6))
         {
             SelectedElementType = typeof(Steam);
@@ -134,7 +134,7 @@ public class ControllerManager
         }else if (keyboardState.IsKeyDown(Keys.D7))
         {
             SelectedElementType = typeof(Water);
-            Console.WriteLine("Changed to water");
+            Console.WriteLine("Changed to Water");
         }else if (keyboardState.IsKeyDown(Keys.D8))
         {
             SelectedElementType = typeof(Flesh);
@@ -147,6 +147,10 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Blood);
             Console.WriteLine("Changed to Blood");
+        }else if (keyboardState.IsKeyDown(Keys.F))
+        {
+            SelectedElementType = typeof(Fire);
+            Console.WriteLine("Changed to Fire");
         }
         
 

@@ -4,43 +4,35 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
-/// <summary>
-/// Elemento gaseoso que asciende y se desplaza lateralmente cuando es posible.
-/// </summary>
-public class Smoke : Element
+public class Fire : Element
 {
-    public Smoke() : base(new Color(20, 20, 20))
+    public Fire() : base(new Color(20, 20, 20))
     {
-        Density = 0.1f;
-        var Smoke0 = new Color(105, 105, 105);
-        var Smoke1 = new Color(128, 128, 128);
-        var Smoke2 = new Color(169, 169, 169);
-        var Smoke3 = new Color(192, 192, 192);
+        var Fire0 = new Color(255, 0, 0); // Rojo
+        var Fire1 = new Color(255, 165, 0); // Naranja
+        var Fire2 = new Color(255, 255, 0); // Amarillo
 
-        Random randomSmoke = RandomProvider.Random;
-        int numSmoke = randomSmoke.Next(0, 4);
+        Random randomFire = RandomProvider.Random;
+        int numFire = randomFire.Next(0, 3);
 
-        Color[] SmokeColors = { Smoke0, Smoke1, Smoke2, Smoke3 };
+        Color[] FireColors = { Fire0, Fire1, Fire2 };
 
-        Color = SmokeColors[numSmoke];
+        Color = FireColors[numFire];
     }
 
-    /// <summary>
-    /// Actualiza el humo: asciende y busca espacios laterales si no puede subir.
-    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         Random rand = RandomProvider.Random;
 
         // Probabilidad de desaparecer
-        if (rand.Next(0, 150) == 0) // 1 de 150 probabilidades de desaparecer en cada fotograma
+        if (rand.Next(0, 27) == 0)
         {
             api.SetElement(0, 0, Empty.Instance);
             return;
         }
 
-        // Probabilidad de moverse hacia abajo
-        if (rand.Next(0, 20) == 0) // 1 de 20 probabilidades
+        // Probabilidad de moverse hacia abajo (chispa)
+        if (rand.Next(0, 20) == 0)
         {
             if (api.GetElement(0, -1) is Empty)
             {
@@ -65,9 +57,9 @@ public class Smoke : Element
             api.MoveTo(1, 1);
             return;
         }
-
+        
         // Movimiento horizontal aleatorio con tendencia a la derecha
-        bool tryLeft = rand.Next(0, 5) < 2; // 40% de probabilidad de intentar ir a la izquierda, 60% a la derecha
+        bool tryLeft = rand.Next(0, 5) < 2; // 40% izquierda, 60% derecha
         var leftElement = api.GetElement(-1, 0);
         var rightElement = api.GetElement(1, 0);
 
@@ -86,7 +78,7 @@ public class Smoke : Element
             ApplyDispertion(false, api);
         }
     }
-
+    
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
@@ -99,7 +91,7 @@ public class Smoke : Element
         }
         api.MoveTo(maxDisp * direction, 0);
     }
-
+    
     public int MDispertion()
     {
         int dispertion = 3;
@@ -112,11 +104,33 @@ public class Smoke : Element
         return 0;
     }
 
-    /// <summary>
-    /// El humo no implementa interacciones activas por defecto.
-    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
-        // El humo no interactúa con otros elementos
+        Random rand = RandomProvider.Random;
+        // Revisa las 8 celdas circundantes
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i == 0 && j == 0) continue; // Omite la celda actual
+
+                // Revisa si el vecino es madera
+                if (interactionApi.GetElement(i, j) is Wood)
+                {
+                    // Probabilidad de que la madera se convierta en fuego
+                    if (rand.Next(0, 32) == 0) // 1 de 5 probabilidades
+                    {
+                        elementApi.SetElement(i, j, new Fire());
+
+                        // Pequeña probabilidad de que el fuego original se extinga después de propagarse
+                        if (rand.Next(0, 10) == 0) // 1 de 10 probabilidades
+                        {
+                            elementApi.SetElement(0, 0, Empty.Instance);
+                            return; // Detiene la interacción después de extinguirse
+                        }
+                    }
+                }
+            }
+        }
     }
 }

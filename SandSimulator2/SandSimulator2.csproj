@@ -34,6 +34,7 @@
     <ItemGroup>
       <Folder Include="src\Elements\Interfaces\" />
       <Folder Include="src\Elements\Static\SGas\" />
+      <Folder Include="src\Elements\Static\SLiquid\" />
     </ItemGroup>
     <ItemGroup>
         <None Update="Content\GumProject\**\*.*">

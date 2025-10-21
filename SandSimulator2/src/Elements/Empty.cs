@@ -48,7 +48,10 @@ public sealed class Empty : Element
         }
     }
 
-    private Empty() : base(Color.Transparent) { }
+    private Empty() : base(Color.Transparent)
+    {
+        Density = 0.0f;
+    }
 
     /// <summary>
     /// Empty no debe actualizarse nunca; lanzar excepción si ocurre.
