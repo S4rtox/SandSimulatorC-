@@ -8,13 +8,25 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace SandSimulator2.GridManagers;
 
+/// <summary>
+/// Administra la grilla de elementos, su simulación por pasos y la cola de acciones de usuario.
+/// </summary>
 public class GridManager
 {
     private readonly Element[,] _grid;
 
+    /// <summary>
+    /// Ancho de la grilla en celdas.
+    /// </summary>
     public int Width { get; }
+    /// <summary>
+    /// Alto de la grilla en celdas.
+    /// </summary>
     public int Height { get; }
 
+    /// <summary>
+    /// Contador de generación de la simulación. Aumenta en cada <see cref="Update"/>.
+    /// </summary>
     public byte Generation { get; private set; } = 0;
 
     private readonly ConcurrentQueue<PlaceAction> _actionQueue = new();
@@ -42,6 +54,11 @@ public class GridManager
     }
 
 
+    /// <summary>
+    /// Crea una grilla vacía del tamaño especificado.
+    /// </summary>
+    /// <param name="width">Ancho en celdas.</param>
+    /// <param name="height">Alto en celdas.</param>
     public GridManager(int width, int height)
     {
         Width = width;
@@ -60,6 +77,9 @@ public class GridManager
 
 
 
+    /// <summary>
+    /// Limpia la grilla, estableciendo todas las celdas a <see cref="Empty"/> y reinicia la generación.
+    /// </summary>
     public void Clear()
     {
         for (int x = 0; x < Width; x++)
@@ -72,7 +92,10 @@ public class GridManager
         Generation = 0;
     }
 
-
+    /// <summary>
+    /// Avanza la simulación un paso, procesando la cola de acciones y actualizando elementos.
+    /// </summary>
+    /// <param name="delta">Tiempo transcurrido desde el último cuadro.</param>
     public void Update(GameTime delta)
     {
         while (_actionQueue.TryDequeue(out var action))
@@ -109,11 +132,22 @@ public class GridManager
         element.Update( api, delta);
     }
 
+    /// <summary>
+    /// Indica si una posición está dentro de los límites de la grilla.
+    /// </summary>
+    /// <param name="x">Coordenada X.</param>
+    /// <param name="y">Coordenada Y.</param>
+    /// <returns><c>true</c> si la posición es válida; en caso contrario, <c>false</c>.</returns>
     public bool IsInBounds(int x, int y)
     {
         return !(x < 0 || x >= Width || y < 0 || y >= Height);
     }
 
+    /// <summary>
+    /// Indica si una posición está dentro de los límites de la grilla.
+    /// </summary>
+    /// <param name="position">Posición como <see cref="Vector2I"/>.</param>
+    /// <returns><c>true</c> si la posición es válida; en caso contrario, <c>false</c>.</returns>
     public bool IsInBounds(Vector2I position)
     {
         return IsInBounds(position.X, position.Y);
@@ -121,8 +155,21 @@ public class GridManager
 
 
 
+    /// <summary>
+    /// API de solo lectura para consultar elementos cercanos con desplazamientos limitados.
+    /// </summary>
+    /// <param name="x">Coordenada X del elemento actual.</param>
+    /// <param name="y">Coordenada Y del elemento actual.</param>
+    /// <param name="gridManager">Referencia a la grilla.</param>
     public readonly ref struct InteractionAPI(int x, int y, GridManager gridManager)
     {
+        /// <summary>
+        /// Obtiene el elemento en un desplazamiento relativo. Los valores deben estar entre -2 y 2.
+        /// </summary>
+        /// <param name="offsetX">Desplazamiento en X (-2..2).</param>
+        /// <param name="offsetY">Desplazamiento en Y (-2..2).</param>
+        /// <returns>Elemento en la posición relativa o borde si está fuera.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Si el desplazamiento está fuera del rango permitido.</exception>
         public Element GetElement(int offsetX, int offsetY)
         {
             if(offsetX > 2 || offsetX < -2 || offsetY > 2 || offsetY < -2)
@@ -134,8 +181,17 @@ public class GridManager
 
     }
 
+    /// <summary>
+    /// API de manipulación para mover/intercambiar/colocar elementos relativos a la celda actual.
+    /// </summary>
+    /// <param name="x">Coordenada X del elemento actual.</param>
+    /// <param name="y">Coordenada Y del elemento actual.</param>
+    /// <param name="gridManager">Referencia a la grilla.</param>
     public readonly ref struct ElementAPI(int x, int y, GridManager gridManager)
     {
+        /// <summary>
+        /// Obtiene el elemento en la posición relativa indicada.
+        /// </summary>
         public Element GetElement(int offsetX, int offsetY)
         {
             var targetX = x + offsetX;
@@ -143,6 +199,9 @@ public class GridManager
             return gridManager[targetX, targetY] ;
         }
 
+        /// <summary>
+        /// Intercambia el elemento actual con el de la posición relativa indicada.
+        /// </summary>
         public void SwapWith(int offsetX, int offsetY)
         {
             var targetX = x + offsetX;
@@ -155,6 +214,9 @@ public class GridManager
             gridManager[x, y].Clock = (byte)(gridManager.Generation + 1);
         }
 
+        /// <summary>
+        /// Mueve el elemento actual a la posición relativa indicada, dejando vacío el origen.
+        /// </summary>
         public void MoveTo(int offsetX, int offsetY)
         {
             var targetX = x + offsetX;
@@ -167,6 +229,9 @@ public class GridManager
             gridManager[targetX, targetY].Clock = (byte)(gridManager.Generation + 1);
         }
 
+        /// <summary>
+        /// Establece un nuevo elemento en la posición relativa indicada.
+        /// </summary>
         public void SetElement(int offsetX, int offsetY, Element element)
         {
             var targetX = x + offsetX;
@@ -185,21 +250,33 @@ public class GridManager
 
     }
 
+    /// <summary>
+    /// Obtiene el elemento en las coordenadas indicadas.
+    /// </summary>
     public Element GetElement(int x, int y)
     {
         return this[x, y];
     }
 
+    /// <summary>
+    /// Establece el elemento en las coordenadas indicadas.
+    /// </summary>
     public void SetElement(int x, int y, Element element)
     {
         this[x, y] = element;
     }
 
+    /// <summary>
+    /// Encola una acción de colocación para aplicarla en el siguiente ciclo de simulación.
+    /// </summary>
     public void EnqueueAction(PlaceAction action)
     {
         _actionQueue.Enqueue(action);
     }
 
+    /// <summary>
+    /// Construye un estado serializable con los elementos no vacíos presentes en la grilla.
+    /// </summary>
     public GridState GetGridState()
     {
         var elementInfos = new List<ElementInfo>();
@@ -217,6 +294,9 @@ public class GridManager
         return new GridState { Elements = elementInfos };
     }
 
+    /// <summary>
+    /// Reemplaza el contenido de la grilla con el estado proporcionado.
+    /// </summary>
     public void SetGridState(GridState gridState)
     {
         Clear();

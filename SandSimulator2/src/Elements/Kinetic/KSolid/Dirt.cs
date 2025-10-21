@@ -4,8 +4,14 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento sólido terroso que cae por gravedad y se apila, similar a la arena.
+/// </summary>
 public class Dirt : Element
 {
+    /// <summary>
+    /// Inicializa una partícula de tierra con un color seleccionado aleatoriamente de una paleta.
+    /// </summary>
     public Dirt() : base(new Color(89, 61, 46))
     {
         // Dirt
@@ -21,7 +27,9 @@ public class Dirt : Element
         Color = DirtColors[numDirt];
     }
 
-    //Metodo que se ejecuta por cada frame, en cada elemento
+    /// <summary>
+    /// Actualiza la tierra: cae si hay espacio o se desplaza en diagonal si es posible.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         var belowElement = api.GetElement(0, -1);
@@ -45,6 +53,9 @@ public class Dirt : Element
 
     }
 
+    /// <summary>
+    /// Interacciones no implementadas actualmente para la tierra.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

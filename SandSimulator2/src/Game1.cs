@@ -10,6 +10,9 @@ using SandSimulator2.Screens;
 
 namespace SandSimulator2;
 
+/// <summary>
+/// Clase principal del juego MonoGame que orquesta simulación, entrada, red y renderizado.
+/// </summary>
 public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
@@ -31,12 +34,18 @@ public class Game1 : Game
 
     private const int PixelSize = 4;
 
+    /// <summary>
+    /// Inicializa un nuevo juego y configura los servicios base.
+    /// </summary>
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "..\\Content";
         IsMouseVisible = true;
     }
+    /// <summary>
+    /// Configura la UI, el tamaño de la grilla y los administradores principales.
+    /// </summary>
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
@@ -57,6 +66,9 @@ public class Game1 : Game
         base.Initialize();
     }
 
+    /// <summary>
+    /// Inicia el servidor en el puerto seleccionado y oculta el menú.
+    /// </summary>
     public void StartHost(int port)
     {
         if (_server != null || _client != null) return;
@@ -67,6 +79,9 @@ public class Game1 : Game
         _elementMenu.Visual.Visible = false;
     }
 
+    /// <summary>
+    /// Conecta como cliente a la IP/puerto indicado y oculta el menú.
+    /// </summary>
     public void StartClient(string ip, int port)
     {
         if (_client != null || _server != null) return;
@@ -78,12 +93,18 @@ public class Game1 : Game
         _elementMenu.Visual.Visible = false;
     }
 
+    /// <summary>
+    /// Maneja una acción de colocación local propagándola a red si corresponde.
+    /// </summary>
     private void OnPlaceAction(PlaceAction action)
     {
         _client?.SendActionAsync(action);
         _server?.BroadcastActionAsync(action, null);
     }
 
+    /// <summary>
+    /// Carga recursos de contenido necesarios (texturas, etc.).
+    /// </summary>
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -92,6 +113,9 @@ public class Game1 : Game
         // TODO: use this.Content to load your game content here
     }
 
+    /// <summary>
+    /// Actualiza la lógica de juego: UI, simulación de grilla e input si está activo.
+    /// </summary>
     protected override void Update(GameTime delta)
     {
         var keyboardState = Keyboard.GetState();
@@ -112,7 +136,9 @@ public class Game1 : Game
         base.Update(delta);
     }
 
-
+    /// <summary>
+    /// Dibuja la grilla y la UI de Gum en la pantalla.
+    /// </summary>
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -126,6 +152,9 @@ public class Game1 : Game
         base.Draw(gameTime);
     }
 
+    /// <summary>
+    /// Libera recursos manejados (cliente/servidor de red) al cerrar.
+    /// </summary>
     protected override void Dispose(bool disposing)
     {
         if (disposing)

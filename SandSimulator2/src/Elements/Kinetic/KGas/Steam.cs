@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Vapor que asciende y se desplaza lateralmente cuando encuentra espacio.
+/// </summary>
 public class Steam : Element
 {
  public Steam() : base(new Color(20, 20, 20))
@@ -20,6 +23,9 @@ public class Steam : Element
   Color = SteamColors[numSteam];
  }
 
+ /// <summary>
+ /// Actualiza el vapor: intenta subir; si no puede, se mueve en diagonal o lateralmente.
+ /// </summary>
  public override void Update(GridManager.ElementAPI api, GameTime delta)
  {
   if (api.GetElement(0, 1) is Empty)
@@ -58,6 +64,9 @@ public class Steam : Element
   }
  }
 
+ /// <summary>
+ /// El vapor no implementa interacciones activas por defecto.
+ /// </summary>
  public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
  {
 

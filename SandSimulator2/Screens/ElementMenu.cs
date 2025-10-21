@@ -2,9 +2,18 @@ using System;
 
 namespace SandSimulator2.Screens
 {
+    /// <summary>
+    /// Menú de inicio para alojar o unirse a una partida multijugador.
+    /// </summary>
     partial class ElementMenu
     {
+        /// <summary>
+        /// Se dispara al pulsar el botón de Host con el puerto seleccionado.
+        /// </summary>
         public event Action<int> HostClicked;
+        /// <summary>
+        /// Se dispara al pulsar el botón de Join con IP y puerto seleccionados.
+        /// </summary>
         public event Action<string, int> JoinClicked;
 
         partial void CustomInitialize()
@@ -20,7 +29,7 @@ namespace SandSimulator2.Screens
                 }
                 else
                 {
-                    HostClicked?.Invoke(7777); // Default port
+                    HostClicked?.Invoke(7777); // Puerto por defecto
                 }
             };
 
@@ -33,7 +42,7 @@ namespace SandSimulator2.Screens
                 }
                 else
                 {
-                    JoinClicked?.Invoke(ipAddress, 7777); // Default port
+                    JoinClicked?.Invoke(ipAddress, 7777); // Puerto por defecto
                 }
             };
         }

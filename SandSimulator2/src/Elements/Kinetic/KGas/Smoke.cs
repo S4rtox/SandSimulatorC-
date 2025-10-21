@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento gaseoso que asciende y se desplaza lateralmente cuando es posible.
+/// </summary>
 public class Smoke : Element
 {
     public Smoke() : base(new Color(20, 20, 20))
@@ -21,6 +24,9 @@ public class Smoke : Element
         Color = SmokeColors[numSmoke];
     }
 
+    /// <summary>
+    /// Actualiza el humo: asciende y busca espacios laterales si no puede subir.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         if (api.GetElement(0, 1) is Empty)
@@ -61,6 +67,9 @@ public class Smoke : Element
 
     }
 
+    /// <summary>
+    /// El humo no implementa interacciones activas por defecto.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
 

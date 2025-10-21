@@ -1,14 +1,8 @@
-using Gum.Converters;
-using Gum.DataTypes;
-using Gum.Managers;
-using Gum.Wireframe;
-
-using RenderingLibrary.Graphics;
-
-using System.Linq;
-
 namespace SandSimulator2.Components.Controls
 {
+    /// <summary>
+    /// Control de interfaz (Gum) parcial para un cuadro de diálogo. Punto de extensión: CustomInitialize.
+    /// </summary>
     partial class DialogBox
     {
         partial void CustomInitialize()

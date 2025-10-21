@@ -10,6 +10,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Multiplayer;
 
+/// <summary>
+/// Servidor UDP que recibe acciones de los clientes, las aplica a la grilla y las reenvía al resto.
+/// </summary>
 public class MultiplayerServer : IDisposable
 {
     private readonly UdpClient _listener;
@@ -17,6 +20,11 @@ public class MultiplayerServer : IDisposable
     private readonly GridManager _gridManager;
     private bool _isDisposed = false;
 
+    /// <summary>
+    /// Crea una nueva instancia del servidor en el puerto especificado.
+    /// </summary>
+    /// <param name="port">Puerto UDP en el que escuchar.</param>
+    /// <param name="gridManager">Administrador de grilla sobre el que se aplicarán acciones.</param>
     public MultiplayerServer(int port, GridManager gridManager)
     {
         _gridManager = gridManager;
@@ -24,6 +32,9 @@ public class MultiplayerServer : IDisposable
         Console.WriteLine($"Server started on port {port}. Waiting for messages...");
     }
 
+    /// <summary>
+    /// Inicia el bucle asíncrono de escucha para recibir y procesar datagramas.
+    /// </summary>
     public async Task StartListeningAsync()
     {
         try
@@ -45,7 +56,10 @@ public class MultiplayerServer : IDisposable
                             {
                                 _clients.Add(clientEndPoint);
                                 Console.WriteLine($"New client connected: {clientEndPoint}");
-                                await SendFullGridState(clientEndPoint);
+                                // Envío del estado completo deshabilitado temporalmente:
+                                // puede exceder el tamaño máximo de datagrama UDP (MTU) y causar WSAEMSGSIZE,
+                                // rompiendo la simulación al conectar clientes con grillas grandes.
+                                // await SendFullGridState(clientEndPoint);
                             }
                             break;
                         case MessageType.PlaceAction:
@@ -71,18 +85,11 @@ public class MultiplayerServer : IDisposable
         }
     }
 
-    private async Task SendFullGridState(IPEndPoint clientEndPoint)
-    {
-        var gridState = _gridManager.GetGridState();
-        var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-        var payload = JsonConvert.SerializeObject(gridState, settings);
-        var networkMessage = new NetworkMessage { MessageType = MessageType.GridState, Payload = payload };
-
-        string message = JsonConvert.SerializeObject(networkMessage);
-        byte[] buffer = Encoding.UTF8.GetBytes(message);
-        await _listener.SendAsync(buffer, buffer.Length, clientEndPoint);
-    }
-
+    /// <summary>
+    /// Difunde una acción recibida a todos los clientes excepto al origen.
+    /// </summary>
+    /// <param name="action">Acción de colocación a difundir.</param>
+    /// <param name="origin">Extremo remoto que originó la acción, para no reenviarle.</param>
     public async Task BroadcastActionAsync(PlaceAction action, IPEndPoint? origin)
     {
         var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
@@ -102,6 +109,9 @@ public class MultiplayerServer : IDisposable
         }
     }
 
+    /// <summary>
+    /// Libera los recursos del socket UDP del servidor.
+    /// </summary>
     public void Dispose()
     {
         if (!_isDisposed)

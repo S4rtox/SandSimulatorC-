@@ -4,6 +4,9 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Elements.Kinetic;
 
+/// <summary>
+/// Elemento líquido sangre, fluye hacia abajo y puede convertir agua adyacente en sangre.
+/// </summary>
 public class Blood : Element
 {
     public Blood() : base(Color.Red)
@@ -23,6 +26,9 @@ public class Blood : Element
 
     }
 
+    /// <summary>
+    /// Actualiza la sangre: cae si puede, si no se desplaza diagonalmente o lateralmente con dispersión.
+    /// </summary>
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
         BloodPattern();
@@ -69,6 +75,9 @@ public class Blood : Element
         }
     }
 
+    /// <summary>
+    /// Aplica dispersión horizontal hasta el máximo permitido.
+    /// </summary>
     private void ApplyDispertion(bool isLeft, GridManager.ElementAPI api)
     {
         var direction = isLeft ? -1 : 1;
@@ -82,6 +91,9 @@ public class Blood : Element
         api.MoveTo(maxDisp * direction, 0);
     }
 
+    /// <summary>
+    /// Calcula un valor de dispersión máximo aleatorio (1..3).
+    /// </summary>
     public int MDispertion()
     {
         int dispertion = 3;
@@ -93,6 +105,9 @@ public class Blood : Element
         return 0;
     }
 
+    /// <summary>
+    /// Cambia ocasionalmente el color de la sangre para variación visual.
+    /// </summary>
     public void BloodPattern()
     {
         var Blood0 = new Color(138, 7, 7);
@@ -108,6 +123,9 @@ public class Blood : Element
         }
     }
 
+    /// <summary>
+    /// Si hay agua adyacente, la convierte en sangre.
+    /// </summary>
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
         var elementBelow = interactionApi.GetElement(0, -1);

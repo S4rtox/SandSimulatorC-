@@ -9,6 +9,14 @@ using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Multiplayer;
 
+/// <summary>
+/// Cliente UDP para sincronizar acciones y estado de la grilla con un servidor.
+/// </summary>
+/// <remarks>
+/// Este cliente envía un <see cref="MessageType.Handshake"/> al conectar y, posteriormente,
+/// transmite <see cref="PlaceAction"/> al servidor. También escucha mensajes entrantes para
+/// aplicar acciones remotas o actualizar el estado de la grilla.
+/// </remarks>
 public class MultiplayerClient : IDisposable
 {
     private readonly UdpClient _udpClient;
@@ -16,20 +24,28 @@ public class MultiplayerClient : IDisposable
     private readonly GridManager _gridManager;
     private IPEndPoint _serverEndPoint;
 
-    // The constructor binds the listener to a specific port
+    /// <summary>
+    /// Crea una nueva instancia del cliente multijugador.
+    /// </summary>
+    /// <param name="gridManager">Administrador de grilla donde se aplicarán las actualizaciones recibidas.</param>
     public MultiplayerClient(GridManager gridManager)
     {
         _gridManager = gridManager;
         _udpClient = new UdpClient();
     }
 
+    /// <summary>
+    /// Conecta con el servidor y envía un mensaje de saludo (handshake).
+    /// </summary>
+    /// <param name="ipAddress">Dirección IP del servidor.</param>
+    /// <param name="port">Puerto del servidor.</param>
     public void Connect(string ipAddress, int port)
     {
         _serverEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
         _udpClient.Connect(_serverEndPoint);
         Console.WriteLine($"Connected to server at {_serverEndPoint}");
 
-        // Send a handshake message to the server
+        // Enviar un mensaje de handshake al servidor
         var handshake = new NetworkMessage { MessageType = MessageType.Handshake };
         var settings = new JsonSerializerSettings();
         string message = JsonConvert.SerializeObject(handshake, settings);
@@ -37,6 +53,10 @@ public class MultiplayerClient : IDisposable
         _udpClient.Send(buffer, buffer.Length);
     }
 
+    /// <summary>
+    /// Envía de forma asíncrona una acción de colocación al servidor.
+    /// </summary>
+    /// <param name="action">Acción de colocación a enviar.</param>
     public async Task SendActionAsync(PlaceAction action)
     {
         if (_serverEndPoint == null)
@@ -55,17 +75,23 @@ public class MultiplayerClient : IDisposable
     }
 
 
-    // The main instance method to run the listening loop
+    /// <summary>
+    /// Inicia el bucle de escucha asíncrono para procesar mensajes entrantes.
+    /// </summary>
+    /// <remarks>
+    /// Aplica <see cref="PlaceAction"/> recibidas en cola al <see cref="GridManager"/> y
+    /// puede actualizar el estado completo de la grilla si se recibe <see cref="MessageType.GridState"/>.
+    /// </remarks>
     public async Task StartListeningAsync()
     {
         try
         {
             while (true)
             {
-                // Wait for a datagram to arrive
+                // Espera hasta recibir un datagrama
                 UdpReceiveResult result = await _udpClient.ReceiveAsync();
 
-                // Process the received datagram
+                // Procesa el datagrama recibido
                 string message = Encoding.UTF8.GetString(result.Buffer);
                 var networkMessage = JsonConvert.DeserializeObject<NetworkMessage>(message);
 
@@ -94,7 +120,7 @@ public class MultiplayerClient : IDisposable
         }
         catch (ObjectDisposedException)
         {
-            // This exception is expected when the listener is closed, so we can ignore it.
+            // Esta excepción es esperada cuando el listener se cierra.
             Console.WriteLine("Listener has been closed.");
         }
         catch (Exception e)
@@ -103,7 +129,9 @@ public class MultiplayerClient : IDisposable
         }
     }
 
-    // Implement IDisposable to properly close the UdpClient
+    /// <summary>
+    /// Libera los recursos asociados al cliente y cierra el socket UDP.
+    /// </summary>
     public void Dispose()
     {
         if (!_isDisposed)
