@@ -4,7 +4,7 @@
     {
       "src": [
         {
-          "src": "../SandSimulator2",
+          "src": "SandSimulator2",
           "files": [
             "**/*.csproj"
           ]
