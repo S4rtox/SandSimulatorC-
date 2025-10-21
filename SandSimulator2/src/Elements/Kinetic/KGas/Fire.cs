@@ -8,17 +8,15 @@ public class Fire : Element
 {
     public Fire() : base(new Color(20, 20, 20))
     {
-        var Fire0 = new Color(243, 123, 46);
-        var Fire1 = new Color(255, 240, 93);
-        var Fire2 = new Color(214, 66, 16);
-        var Fire3 = new Color(255, 187, 69);
-        var Fire4 = new Color(206, 58, 12);
-        var Fire5 = new Color(255, 237, 100);
+        var Fire0 = new Color(255, 0, 0); // Rojo
+        var Fire1 = new Color(255, 165, 0); // Naranja
+        var Fire2 = new Color(255, 255, 0); // Amarillo
 
         Random randomFire = RandomProvider.Random;
+        int numFire = randomFire.Next(0, 3);
 
-        Color[] FireColors = { Fire0, Fire1, Fire2, Fire3, Fire4, Fire5 };
-        int numFire = randomFire.Next(0, FireColors.Length);
+        Color[] FireColors = { Fire0, Fire1, Fire2 };
+
         Color = FireColors[numFire];
     }
 
@@ -26,23 +24,16 @@ public class Fire : Element
     {
         Random rand = RandomProvider.Random;
 
-        // Probabilidad de moverse hacia abajo (como una chispa/ascua que cae)
-        if (rand.Next(0, 20) == 0) // 1 de 20 probabilidades
+        // Probabilidad de desaparecer
+        if (rand.Next(0, 27) == 0)
         {
-            // Priorizar el movimiento diagonal hacia abajo al azar
-            int side = rand.Next(0, 2) == 0 ? -1 : 1; 
-            if (api.GetElement(side, -1) is Empty)
-            {
-                api.MoveTo(side, -1);
-                return;
-            }
-            // Probar la otra diagonal
-            if (api.GetElement(-side, -1) is Empty)
-            {
-                api.MoveTo(-side, -1);
-                return;
-            }
-            // Probar hacia abajo
+            api.SetElement(0, 0, Empty.Instance);
+            return;
+        }
+
+        // Probabilidad de moverse hacia abajo (chispa)
+        if (rand.Next(0, 20) == 0)
+        {
             if (api.GetElement(0, -1) is Empty)
             {
                 api.MoveTo(0, -1);
@@ -50,46 +41,41 @@ public class Fire : Element
             }
         }
 
-        // Si el elemento de arriba es vacío, se mueve hacia arriba
+        // Movimiento ascendente
         if (api.GetElement(0, 1) is Empty)
         {
             api.MoveTo(0, 1);
             return;
         }
-        // Si el elemento de arriba a la izquierda es vacío, se mueve hacia arriba a la izquierda
         if (api.GetElement(-1, 1) is Empty)
         {
             api.MoveTo(-1, 1);
             return;
         }
-        // Si el elemento de arriba a la derecha es vacío, se mueve hacia arriba a la derecha
         if (api.GetElement(1, 1) is Empty)
         {
             api.MoveTo(1, 1);
             return;
         }
-        // Movimiento horizontal aleatorio si hay espacio vacío
-        bool tryLeft = rand.Next(0, 2) == 0; // 0 = izquierda, 1 = derecha
+        
+        // Movimiento horizontal aleatorio con tendencia a la derecha
+        bool tryLeft = rand.Next(0, 5) < 2; // 40% izquierda, 60% derecha
         var leftElement = api.GetElement(-1, 0);
         var rightElement = api.GetElement(1, 0);
 
-        // Checa si ambos lados están vacíos para intentar moverse a cualquiera de los dos lados
         if (leftElement is Empty && rightElement is Empty)
         {
             ApplyDispertion(tryLeft, api);
             return;
         }
-        // Checa si solo el lado izquierdo está vacío
         if (leftElement is Empty)
         {
             ApplyDispertion(true, api);
             return;
         }
-        // Checa si solo el lado derecho está vacío
         if (rightElement is Empty)
         {
             ApplyDispertion(false, api);
-            return;
         }
     }
     
@@ -112,23 +98,39 @@ public class Fire : Element
         Random disp = RandomProvider.Random;
         int j = disp.Next(0, dispertion);
 
-        if (j == 0)
-        {
-            return 1;
-        }
-        if (j  == 1)
-        {
-            return 2;
-        }
-        if (j == 2)
-        {
-            return 3;
-        }
+        if (j == 0) return 1;
+        if (j == 1) return 2;
+        if (j == 2) return 3;
         return 0;
     }
 
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
+        Random rand = RandomProvider.Random;
+        // Revisa las 8 celdas circundantes
+        for (int i = -1; i <= 1; i++)
+        {
+            for (int j = -1; j <= 1; j++)
+            {
+                if (i == 0 && j == 0) continue; // Omite la celda actual
 
+                // Revisa si el vecino es madera
+                if (interactionApi.GetElement(i, j) is Wood)
+                {
+                    // Probabilidad de que la madera se convierta en fuego
+                    if (rand.Next(0, 32) == 0) // 1 de 5 probabilidades
+                    {
+                        elementApi.SetElement(i, j, new Fire());
+
+                        // Pequeña probabilidad de que el fuego original se extinga después de propagarse
+                        if (rand.Next(0, 10) == 0) // 1 de 10 probabilidades
+                        {
+                            elementApi.SetElement(0, 0, Empty.Instance);
+                            return; // Detiene la interacción después de extinguirse
+                        }
+                    }
+                }
+            }
+        }
     }
 }

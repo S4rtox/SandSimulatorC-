@@ -1,30 +1,26 @@
 using System;
-using System.Drawing;
 using Microsoft.Xna.Framework;
 using SandSimulator2.GridManagers;
-using Color = Microsoft.Xna.Framework.Color;
 
-namespace SandSimulator2.Elements.Kinetic;
+namespace SandSimulator2.Elements.Kinetic.KSolid;
 
-public class Sand : Element
+public class WetSand : Element
 {
-    public Sand() : base(new Color(194, 178, 128))
+    public WetSand() : base(new Color(164, 148, 98))
     {
-        Density = 1.5f;
-        //Primero tenemos los sprites de la arena:
-        var Color0 = new Color(234,190,117);
-        var Color1 = new Color(245,209,151);
-        var Color2 = new Color(251,227,188);
-        var Color3 = new Color(255,240,217);
-        
+        Density = 1.7f;
+        var Color0 = new Color(184, 160, 107);
+        var Color1 = new Color(195, 179, 141);
+        var Color2 = new Color(201, 197, 178);
+        var Color3 = new Color(205, 210, 207);
+
         Random random = RandomProvider.Random;
-        int num = random.Next(0, 3);
-        
-        Color[] color = {Color0,Color1, Color2, Color3 };
+        int num = random.Next(0, 4);
+
+        Color[] color = { Color0, Color1, Color2, Color3 };
 
         Color = color[num];
     }
-
 
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {
@@ -51,6 +47,5 @@ public class Sand : Element
 
     public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
     {
-
     }
 }

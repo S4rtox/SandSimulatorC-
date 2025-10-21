@@ -39,7 +39,10 @@ public sealed class Empty : Element
         }
     }
 
-    private Empty() : base(Color.Transparent) { }
+    private Empty() : base(Color.Transparent)
+    {
+        Density = 0.0f;
+    }
 
     public override void Update(GridManager.ElementAPI api, GameTime delta)
     {

@@ -7,6 +7,7 @@ namespace SandSimulator2.Elements;
 public abstract class Element
 {
     public Color Color { get; protected set; }
+    public float Density { get; protected set; }
 
     public virtual byte Clock { get; set; } = 0;
 
