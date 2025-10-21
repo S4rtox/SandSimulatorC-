@@ -110,9 +110,4 @@ public class Steam : Element
         if (j == 2) return 3;
         return 0;
     }
-
-    public override void Interact(GridManager.InteractionAPI interactionApi, GridManager.ElementAPI elementApi)
-    {
-        // El vapor no interactúa con otros elementos
-    }
 }
