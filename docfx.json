@@ -14,6 +14,13 @@
     }
   ],
   "build": {
+    "markdownEngineProperties": {
+      "plantUml": {
+        "outputFormat": "Svg",
+        "remoteUrl": "http://www.plantuml.com/plantuml/",
+        "renderingMode": "Remote"
+      }
+    },
     "content": [
       {
         "files": [
