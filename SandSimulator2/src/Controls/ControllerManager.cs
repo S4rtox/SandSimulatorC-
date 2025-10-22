@@ -151,6 +151,10 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Fire);
             Console.WriteLine("Changed to Fire");
+        }else if (keyboardState.IsKeyDown(Keys.A))
+        {
+            SelectedElementType = typeof(Acid);
+            Console.WriteLine("Changed to Acid");
         }
         
 

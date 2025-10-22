@@ -118,7 +118,7 @@ public class Fire : Element
                 if (interactionApi.GetElement(i, j) is Wood)
                 {
                     // Probabilidad de que la madera se convierta en fuego
-                    if (rand.Next(0, 32) == 0) // 1 de 5 probabilidades
+                    if (rand.Next(0, 32) == 0) // 1 de 32 probabilidades
                     {
                         elementApi.SetElement(i, j, new Fire());
 
