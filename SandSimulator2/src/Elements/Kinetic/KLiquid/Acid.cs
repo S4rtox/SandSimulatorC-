@@ -38,7 +38,7 @@ public class Acid : LiquidElement
                 var neighbor = interactionApi.GetElement(i, j);
 
                 // No disuelve otros ácidos ni el vacío
-                if (neighbor is Acid || neighbor is Empty) continue;
+                if (neighbor is Acid || neighbor is Empty || neighbor is Border) continue;
 
                 // Probabilidad de disolver al vecino
                 if (rand.Next(0, 15) == 0)
