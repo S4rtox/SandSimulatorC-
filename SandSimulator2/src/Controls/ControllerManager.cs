@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SandSimulator2.Elements;
 using SandSimulator2.Elements.Kinetic;
+using SandSimulator2.Elements.Kinetic.Nature;
 using SandSimulator2.GridManagers;
 
 namespace SandSimulator2.Controls;
@@ -151,6 +152,14 @@ public class ControllerManager
         {
             SelectedElementType = typeof(Fire);
             Console.WriteLine("Changed to Fire");
+        }else if (keyboardState.IsKeyDown(Keys.A))
+        {
+            SelectedElementType = typeof(Acid);
+            Console.WriteLine("Changed to Acid");
+        }else if (keyboardState.IsKeyDown(Keys.L))
+        {
+            SelectedElementType = typeof(Fly);
+            Console.WriteLine("Changed to Fly");
         }
         
 
